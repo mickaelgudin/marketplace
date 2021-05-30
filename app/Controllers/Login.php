@@ -16,4 +16,8 @@ class Login extends BaseController
         $this->cache->save('d', 'bar', 100000);
 	    return view('login');
 	}
+
+	public function createAccount() {
+		//configurer mongodb
+	}
 }

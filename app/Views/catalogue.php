@@ -149,6 +149,16 @@
     </body>
 </html>
 
+<script>
+    var buttonSearch = document.querySelector('.searchButton');
+    buttonSearch.addEventListener("click", 
+        function sendSearchElastic() {
+            //search products from elastic search avec une requete HTTP
+            console.log('fd');
+        }, 
+    false);
+</script>
+
 <style>
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 

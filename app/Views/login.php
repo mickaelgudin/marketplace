@@ -1,6 +1,6 @@
 <?php include "menu.php"; ?>
         <div class="login-form">   
-            <form action="log" method="post">
+            <form action="<?= ( !isset($_GET['signup']) ) ? 'log' : 'create-account'; ?>" method="post">
                 <div class="avatar"><i class="material-icons">&#xE7FF;</i></div>
                 <h4 class="modal-title">
                     <?= isset($_GET['signup']) ? "Créer un compte" : "Se connecter"; ?>
@@ -11,7 +11,7 @@
                 <div class="form-group">
                     <input name="password" type="password" class="form-control" placeholder="Mot de passe" required="required">
                 </div>
-                <input type="submit" class="btn btn-primary btn-block btn-lg" value="Login">              
+                <input type="submit" class="btn btn-primary btn-block btn-lg" value="<?= ( isset($_GET['signup']) ) ? 'Créer un compte' : 'Se connecter'; ?>">              
             </form>	
             <?php if( !isset($_GET['signup']) ): ?>		
                 <div class="text-center small">Pas encore de compte? <a href="login?signup=true">S'inscrire</a></div>
