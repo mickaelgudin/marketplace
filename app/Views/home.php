@@ -8,9 +8,9 @@
 			<input type="radio" name="fancy" value="article2" id="article2" />
 			<input type="radio" name="fancy" value="article3" id="article3" />			
 			<label for="start">Bienvenue sur notre site</label>
-            <label for="article1"><img src="https://picsum.photos/700/550" alt="Product"></label>
-            <label for="article2"><img src="https://picsum.photos/700/551" alt="Product"></label>
-            <label for="article3"> <img src="https://picsum.photos/700/552" alt="Product"></label>
+            <label for="article1"><img src="http://placeimg.com/640/480/any" alt="Product"></label>
+            <label for="article2"><img src="http://placeimg.com/640/482/any" alt="Product"></label>
+            <label for="article3"> <img src="http://placeimg.com/640/481/any" alt="Product"></label>
 
 			<div class="keys">Naviguez avec les flèches du clavier</div>
 	</form>
