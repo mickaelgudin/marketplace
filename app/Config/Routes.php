@@ -41,6 +41,7 @@ $routes->post('/create-account', 'Login::createAccount');
 //autres routes
 $routes->get('/catalogue', 'Catalogue::index');
 $routes->get('/panier', 'Panier::index');
+$routes->get('/commande', 'Commande::index');
 
 /*
  * --------------------------------------------------------------------
