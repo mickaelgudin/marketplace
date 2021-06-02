@@ -12,24 +12,7 @@ class Catalogue extends BaseController
 	public function addPanier()
 	{
 
-
 		$this->cache = \Config\Services::cache();
-
-		/**
-		 * tableau exemple 
-		 * $data = array(
-		 *	"data"=>array(
-		 *	"article1" => array(
-		 *		"nom" => "lunette",
-		 *		"prix" => 3,
-		 *		"quantite" => 3
-		 *	),
-		 *	"article2" => array(
-		 *		"nom" => "montre",
-		 *		"prix" => 10,
-		 *		"quantite" => 1
-		 *	))
-		 *);*/
 		if ($data = $this->cache->get('user') != null) {
 			$data = $data = $this->cache->get('user');
 		} else {
@@ -37,11 +20,15 @@ class Catalogue extends BaseController
 				"data" => array()
 			);
 		}
+	
+		$prix=$_POST['prix'];
+		$title=$_POST['title'];
+		$quantite=$_POST['quantite'];
 
 		$article = array(
-			"nom" => "test",
-			"prix" => 3,
-			"quantite" => 3
+			"nom" => $title,
+			"prix" => $prix,
+			"quantite" => $quantite
 		);
 
 
