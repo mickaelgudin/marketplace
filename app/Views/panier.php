@@ -16,7 +16,7 @@
         </thead>
         <tbody>
             <?php
-            if (!empty($data) ) {
+            if (!empty($data)) {
                 foreach ($data as $article) {
 
                     echo '  <tr>
@@ -46,9 +46,12 @@
                     echo array_values($article)[1] * array_values($article)[2] . "€";
                     echo '</strong></td>
                                 <td class="col-sm-1 col-md-1">
-                                    <button type="button" class="btn btn-danger">
-                                        <span class="fa fa-remove"></span> Remove
-                                    </button>
+                                <form action="delete-article" method="post">
+                                <input type="submit" class="btn btn-danger" name="delete"
+                                value="Remove"/>
+                                </form>
+
+                
                                 </td>
                             </tr>';
                 }
