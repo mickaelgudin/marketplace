@@ -16,7 +16,7 @@
         </thead>
         <tbody>
             <?php
-            if (!empty($data)) {
+            if (!empty($data) ) {
                 foreach ($data as $article) {
 
                     echo '  <tr>

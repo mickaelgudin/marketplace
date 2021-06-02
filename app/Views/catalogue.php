@@ -67,11 +67,12 @@
                     <input class="form-control" type="number" name="quantite" value="1" />
                 </div><br>
                 <div class="col px-0">
-            
-                <button class="btn btn-outline-primary btn-block">
-                    Add To Cart 
-                    <i class="fa fa-shopping-basket" aria-hidden="true"></i>
-                </button>
+                <form action="<?= ( !isset($_GET['add']) ) ? 'add-panier' : ''; ?>" method="post">
+               
+                <input type="submit" class="btn btn-outline-primary btn-block" name="add"
+                value="add to cart"/>
+                </form>
+                
                 </div>
                 <div class="ml-2">
                     <button class="btn btn-outline-danger btn-block">
