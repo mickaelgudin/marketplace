@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controllers;
-
+require('Mongodb.php');
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
@@ -39,6 +39,13 @@ class BaseController extends Controller
 	protected $helpers = ["form", "url"];
 
 	/**
+	 * An attribute that contains an instance of the Wrapper class for mongodb
+	 * @see Controllers\Mongodb.php
+	 */
+	protected $mongo_db;
+
+
+	/**
 	 * Constructor.
 	 *
 	 * @param RequestInterface  $request
@@ -49,6 +56,7 @@ class BaseController extends Controller
 	{
 		// Do Not Edit This Line
 		parent::initController($request, $response, $logger);
+		$this->mongo_db = new Mongo_db(array('activate'=>'mongo_db'));
 
 		//--------------------------------------------------------------------
 		// Preload any models, libraries, etc, here.
