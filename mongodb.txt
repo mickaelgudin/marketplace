@@ -1,0 +1,24 @@
+db.createCollection( "utilisateurs", {
+   validator: { $jsonSchema: {
+      bsonType: "object",
+      required: [ "username", "password" ],
+      properties: {
+         username: {
+            bsonType: "string",
+            description: "must be a string and is required"
+         },
+         password: {
+            bsonType : "string",
+            description: "must be a string and is required"
+         },
+	 adresse: {
+            bsonType : "string",
+            description: "must be a string and is required"
+         }
+      }
+   } }
+} )
+
+db.products.insertMany( [
+      { username: "username", password: "password" },
+   ] )

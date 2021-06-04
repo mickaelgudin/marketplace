@@ -11,9 +11,19 @@ class Login extends BaseController
 	}
 
 	public function check() {
-		//activation de redis
-		$this->cache= \Config\Services::cache();
-        $this->cache->save('d', 'bar', 100000);
+		$results = $this->mongo_db->where(array('username' => 'username'))->get('utilisateurs');
+		
+		//var_dump($results);
+
+		$statusLogin = '';
+		if(!empty($results)) {
+			$statusLogin = "connected";
+		} else {
+			$statusLogin = "not connected";
+		}
+
+		//$_POST['connected'] = $statusLogin;
+
 	    return view('login');
 	}
 
