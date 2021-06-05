@@ -19,7 +19,7 @@
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="login"><i class="fas fa-user"></i> Se connecter/ S'inscrire</a>
+                        <a class="nav-link" href="login"><i class="fas fa-user"></i> <?= (isset($_POST['login']) && !empty($_POST['login']) ) ? $_POST['login'] : 'Se connecter/ S\'inscrire' ?> </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="catalogue"><i class="fas fa-search"></i> Catalogue</a>

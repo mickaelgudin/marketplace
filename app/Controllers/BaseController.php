@@ -44,6 +44,7 @@ class BaseController extends Controller
 	 */
 	protected $mongo_db;
 
+	protected $cache;
 
 	/**
 	 * Constructor.
@@ -56,11 +57,18 @@ class BaseController extends Controller
 	{
 		// Do Not Edit This Line
 		parent::initController($request, $response, $logger);
+		$this->checkCookieLoginRedis();
 		$this->mongo_db = new Mongo_db(array('activate'=>'mongo_db'));
 
 		//--------------------------------------------------------------------
 		// Preload any models, libraries, etc, here.
 		//--------------------------------------------------------------------
 		// E.g.: $this->session = \Config\Services::session();
+	}
+
+	public function checkCookieLoginRedis() {
+		$this->cache = \Config\Services::cache();
+		//la vue menu.php contient un affichage conditionnel(le username est affiché si on est log)
+		$_POST['login'] = $this->cache->get('username');
 	}
 }

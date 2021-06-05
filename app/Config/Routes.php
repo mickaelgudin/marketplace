@@ -35,6 +35,7 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Home::index');
 //login routes
 $routes->get('/login', 'Login::index');
+$routes->get('/log', 'Login::check');
 $routes->post('/log', 'Login::check');
 $routes->post('/create-account', 'Login::createAccount');
 
