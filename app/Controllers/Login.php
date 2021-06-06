@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Controllers;
+use CodeIgniter\Cookie\Cookie;
+use \Datetime;
 
 class Login extends BaseController
 {
@@ -15,16 +17,12 @@ class Login extends BaseController
 			return redirect()->to('/public/login');
 		}
 
+		$results = $this->mongo_db->where(array('username' => $_POST['username'], 'password' => $_POST['password']) )
+								  ->get('utilisateurs');
 
-		$results = $this->mongo_db->where(array('username' => $_POST['username'], 
-		 										'password' => $_POST['password']) )->get('utilisateurs');
-
-
-		$login = '';
 		if(!empty($results)) {
-			$_POST['login'] = $_POST['username'];
-			$this->cache->save($_POST['username'], $_POST['username'], 300);
-			return view('login', array($_POST['login']) );
+			$this->cache->save('username', $_POST['username'], 7200);
+			return redirect()->to('/public/login?success=vous êtes connecté');
 		} 
 
 		return redirect()->to('/public/login?error=login');
@@ -35,18 +33,26 @@ class Login extends BaseController
 			return redirect()->to('/public/login?signup=true');
 		}
 
-		$credentials = array('username' => $_POST['username'], 
-						'password' => $_POST['password']);
+		$credentials = array('username' => $_POST['username'], 'password' => $_POST['password']);				
 
 		$results = $this->mongo_db->where($credentials)->get('utilisateurs');
 
 		if(!empty($results)) {
-			return redirect()->to('/public/login?error=signup');
+			return redirect()->to('/public/login?error=le compte existe déjà');
 		}
 
-		$this->mongo_db->insert('utilsateurs', $credentials);
+		$this->mongo_db->insert('utilisateurs', $credentials );
 
-		return redirect()->to('/public/login?success=signup');
+		return redirect()->to('/public/login?success=le compte a été crée');
 	}
 
+	/**
+	 * suppression des données de l'utilisateur dans redis 
+	 * $_POST['login'] est defini dans le BaseController (pour avoir accès au nom de l'utilsateur connecté sur tous les controllers)
+	 * @return view
+	*/ 
+	public function logout() {
+		$this->cache->delete('username');
+		return redirect()->to('/public/');
+	}
 }

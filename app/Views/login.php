@@ -7,7 +7,7 @@
                 </h4>
                 <?php if(isset($_GET['error']) || isset($_GET['success'])) : ?>
                     <div class="alert alert-<?= (isset($_GET['error'])) ? 'danger' : 'success' ?>" role="alert">
-                        <?= (isset($_GET['error'])) ? $_GET['error'] : 'Le compte a été crée.' ?>
+                        <?= (isset($_GET['error'])) ? $_GET['error'] : $_GET['success'] ?>
                     </div>
                 <?php endif; ?>    
 
