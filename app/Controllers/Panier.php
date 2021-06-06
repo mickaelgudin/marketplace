@@ -33,10 +33,24 @@ class Panier extends BaseController
 	public function deleteArticle()
 	{
 		$this->cache = \Config\Services::cache();
-		var_dump("delete specific article");
-		//$this->cache->delete('user');
-		$this->index();
-		
+		$data = $this->cache->get('user');
+		$rem = $_POST['delete'];
+		for ($i = 0; $i <= sizeof($data)+1; $i++) {
+			if(is_null($data)){
+				var_dump("data null");
+			}
+			if ($i == $rem) {
+				$test = "good";
+				unset($data['data'][$i]);
+				$data['data']=array_values($data['data']);
+				$this->cache->save('user', $data);
+				break;
+			} else {
+				$test = "rate";
+			}
+		}
 
+
+		$this->index();
 	}
 }

@@ -17,6 +17,7 @@
         <tbody>
             <?php
             if (!empty($data)) {
+                $i=0;
                 foreach ($data as $article) {
 
                     echo '  <tr>
@@ -47,14 +48,19 @@
                     echo '</strong></td>
                                 <td class="col-sm-1 col-md-1">
                                 <form action="delete-article" method="post">
+                                <input type="hidden" class="btn btn-danger" name="delete"
+                                value="'.$i.'"/>
                                 <input type="submit" class="btn btn-danger" name="delete"
-                                value="Remove"/>
+                                value="remove"/>
+                                
+                                
                                 </form>
 
                 
                                 </td>
                             </tr>';
-                }
+                $i++;
+                        }
             } else {
                 echo "panier vide";
             }
