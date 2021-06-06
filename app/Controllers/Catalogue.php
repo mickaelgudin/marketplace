@@ -6,17 +6,38 @@ class Catalogue extends BaseController
 {
 	public function index()
 	{
-		return view('catalogue');
+
+		
+		$data = $this->catalogueItem();
+		echo view('catalogue', $data);
+		
+	}
+
+	public function catalogueItem()
+	{
+		$data = array(
+			"data"=>array(
+			"article1" => array(
+				"nom" => "lunette",
+				"prix" => 3,
+			),
+			"article2" => array(
+				"nom" => "montre",
+				"prix" => 10,
+			))
+		);
+
+		return $data;
 	}
 
 	public function addPanier()
 	{
 
 		$this->cache = \Config\Services::cache();
-		if ($data = $this->cache->get('user') != null) {
-			$data = $data = $this->cache->get('user');
+		if ($this->cache->get('user') != null) {
+			$panier = $this->cache->get('user');
 		} else {
-			$data = array(
+			$panier = array(
 				"data" => array()
 			);
 		}
@@ -30,11 +51,15 @@ class Catalogue extends BaseController
 			"prix" => $prix,
 			"quantite" => $quantite
 		);
+		
 
+		
+		array_push($panier['data'], $article);
+		$this->cache->save('user', $panier, 300);
+		//var_dump($this->cache->get('user'));
 
-		array_push($data['data'], $article);
-		$this->cache->save('user', $data, 300);
-		var_dump($this->cache->get('user'));
-		return view('catalogue');
+		$data = $this->catalogueItem();
+
+		echo view('catalogue', $data);
 	}
 }

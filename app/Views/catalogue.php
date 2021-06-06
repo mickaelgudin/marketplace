@@ -27,8 +27,11 @@
 
 <div class="container">
     <div class="row">
+    <?php
+           
+                foreach ($data as $article) {
 
-        <div class="col-md-4 mb-3">
+       echo' <div class="col-md-4 mb-3">
             <div class="card h-100">
                 <div class="d-flex justify-content-between position-absolute w-100">
                     <div class="label-sale">
@@ -43,10 +46,16 @@
                 </a>
                 <div class="card-body px-2 pb-2 pt-1">
                     <div class="d-flex justify-content-between">
-                        <form action="<?= (!isset($_GET['add'])) ? 'add-panier' : ''; ?>" method="post">
+                        <form action="';echo (!isset($_GET["add"])) ? "add-panier" : ''; 
+                        
+                        echo '" method="post">
                             <div>
-                                <p class="h4 text-primary">129,99€</p>
-                                <input type="hidden" name="prix" value="129.99" />
+                                <p class="h4 text-primary">'; 
+                                echo array_values($article)[1];
+                                echo'€</p>
+                                <input type="hidden" name="prix" value="'; 
+                                echo array_values($article)[1];
+                                echo'" />
                             </div>
                             <div>
                                 <a href="#" class="text-secondary lead" data-toggle="tooltip" data-placement="left" title="Compare">
@@ -57,8 +66,13 @@
                     <p class="mb-0">
 
                         <strong>
-                            <a href="#" class="text-secondary">lunette</a>
-                            <input type="hidden" name="title" value="lunette" />
+                            <a href="#" class="text-secondary">'; 
+                             echo array_values($article)[0];
+                             echo'</a>
+                            <input type="hidden" name="title" value="';
+                            
+                            echo array_values($article)[0];
+                            echo'" />
                         </strong>
                     </p>
                     <p class="mb-1">
@@ -74,79 +88,14 @@
                         <div class="col px-0">
                             <input type="submit" class="btn btn-outline-primary btn-block" name="add" value="add to cart" />
                             </form>
-
-                        </div>
-                        <div class="ml-2">
-                            <button class="btn btn-outline-danger btn-block">
-                                <i class="fa fa-trash"></i>
-                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div>'; }
+        ?>
 
-        <div class="col-md-4 mb-3">
-            <div class="card h-100">
-                <div class="d-flex justify-content-between position-absolute w-100">
-                    <div class="label-sale">
-                        <span class="text-white bg-primary small d-flex align-items-center px-2 py-1">
-                            <i class="fa fa-tag" aria-hidden="true"></i>
-                            <span class="ml-1">Sale</span>
-                        </span>
-                    </div>
-                </div>
-                <a href="#">
-                    <img src="https://picsum.photos/700/550" class="card-img-top" alt="Product">
-                </a>
-                <div class="card-body px-2 pb-2 pt-1">
-                    <div class="d-flex justify-content-between">
-                        <form action="<?= (!isset($_GET['add'])) ? 'add-panier' : ''; ?>" method="post">
-                            <div>
-                                <p class="h4 text-primary">10€</p>
-                                <input type="hidden" name="prix" value="10" />
-                            </div>
-                            <div>
-                                <a href="#" class="text-secondary lead" data-toggle="tooltip" data-placement="left" title="Compare">
-                                    <i class="fa fa-line-chart" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                    </div>
-                    <p class="mb-0">
-
-                        <strong>
-                            <a href="#" class="text-secondary">montre</a>
-                            <input type="hidden" name="title" value="montre" />
-                        </strong>
-                    </p>
-                    <p class="mb-1">
-                        <small>
-                            <a href="#" class="text-secondary">Brands</a>
-                        </small>
-                    </p>
-
-                    <div class="d-flex justify-content-between mt-auto">
-                        <div class="input-group col-3 mr-2">
-                            <input class="form-control" type="number" name="quantite" value="1" />
-                        </div><br>
-                        <div class="col px-0">
-                            <input type="submit" class="btn btn-outline-primary btn-block" name="add" value="add to cart" />
-                            </form>
-
-                        </div>
-                        <div class="ml-2">
-                            <button class="btn btn-outline-danger btn-block">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
-
+       
 <div class="container">
     <hr />
 </div>
