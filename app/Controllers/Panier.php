@@ -37,7 +37,9 @@ class Panier extends BaseController
 		$rem = $_POST['delete'];
 		for ($i = 0; $i <= sizeof($data)+1; $i++) {
 			if(is_null($data)){
-				var_dump("data null");
+				$data = array(
+					"data" => array()
+				);
 			}
 			if ($i == $rem) {
 				$test = "good";
