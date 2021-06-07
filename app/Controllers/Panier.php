@@ -7,11 +7,6 @@ class Panier extends BaseController
 {
 	public function index()
 	{
-		//activation de redis
-		$this->cache = \Config\Services::cache();
-		//$this->cache->delete("user");
-
-
 		$data = $this->cache->get('user');
 
 		if (is_null($data)) {
@@ -23,7 +18,6 @@ class Panier extends BaseController
 			echo view('panier', $data);
 		}
 
-
 		//$this->cache->save('user', $myArray, 300);
 		//$data = $this->cache->get('user');
 
@@ -32,7 +26,6 @@ class Panier extends BaseController
 
 	public function deleteArticle()
 	{
-		$this->cache = \Config\Services::cache();
 		$data = $this->cache->get('user');
 		$rem = $_POST['delete'];
 		for ($i = 0; $i <= sizeof($data)+1; $i++) {
