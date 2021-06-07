@@ -1,9 +1,9 @@
 db.createCollection( "utilisateurs", {
    validator: { $jsonSchema: {
       bsonType: "object",
-      required: [ "username", "password" ],
+      required: [ "email", "password" ],
       properties: {
-         username: {
+         email: {
             bsonType: "string",
             description: "must be a string and is required"
          },
@@ -19,6 +19,6 @@ db.createCollection( "utilisateurs", {
    } }
 } )
 
-db.products.insertMany( [
-      { username: "username", password: "password" },
+db.utilisateurs.insertMany( [
+      { email: "test@test.fr", password: "password" },
    ] )

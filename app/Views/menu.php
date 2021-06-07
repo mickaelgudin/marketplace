@@ -1,6 +1,6 @@
 <?php
     $this->cache = \Config\Services::cache();
-	$connectedUsername = $this->cache->get('username');
+	$connectedUsername = $this->cache->get('email');
 ?>
 <html>
 
@@ -32,16 +32,16 @@
                         <li class="nav-item">
                             <a class="nav-link" href="logout"><i class="fas fa-sign-out-alt"></i> Se déconnecter </a>
                         </li>
-                    <?php endif; ?>
-                    <li class="nav-item">
+                        <li class="nav-item">
                         <a class="nav-link" href="catalogue"><i class="fas fa-search"></i> Catalogue</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="panier"><i class="fas fa-shopping-basket"></i> Panier</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="commande"><i class="fas fa-clipboard-list"></i> Commande</a>
-                    </li>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="panier"><i class="fas fa-shopping-basket"></i> Panier</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="commande"><i class="fas fa-clipboard-list"></i> Commande</a>
+                        </li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </nav>

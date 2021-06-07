@@ -12,7 +12,7 @@
                 <?php endif; ?>    
 
                 <div class="form-group">
-                    <input name="username" type="text" class="form-control" placeholder="Nom d'utilisateur" required="required">
+                    <input name="email" type="email" class="form-control" placeholder="Email" required="required">
                 </div>
                 <div class="form-group">
                     <input name="password" type="password" class="form-control" placeholder="Mot de passe" required="required">

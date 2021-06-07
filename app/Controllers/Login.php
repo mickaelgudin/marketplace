@@ -12,36 +12,46 @@ class Login extends BaseController
 		return view('login');
 	}
 
+	/**
+	 * verification de la tentative de connexion
+	 * le cas écheant un message d'erreur est afficher
+	 */
 	public function check() {
 		if($this->request->getMethod() == 'get') {
 			return redirect()->to('/public/login');
 		}
 
-		$results = $this->mongo_db->where(array('username' => $_POST['username'], 'password' => $_POST['password']) )
+		$results = $this->mongo_db->where(array('email' => $_POST['email'], 'password' => $_POST['password']) )
 								  ->get('utilisateurs');
 
+		//on vérifie que le compte existe bien						  
 		if(!empty($results)) {
-			$this->cache->save('username', $_POST['username'], 7200);
+			//on crée une variable dans redis en utilisant les méthodes de cache de CodeIgniter
+			$this->cache->save('email', $_POST['email'], 7200); 
 			return redirect()->to('/public/login?success=vous êtes connecté');
 		} 
 
-		return redirect()->to('/public/login?error=login');
+		return redirect()->to('/public/login?error=vérifier vos identiants');
 	}
 
+	/**
+	 * Création d'un nouveau utilisateur
+	 * si l'email existe deja pour un autre utilisateur on retourne une erreur
+	 */
 	public function createAccount() {
 		if($this->request->getMethod() == 'get') {
 			return redirect()->to('/public/login?signup=true');
 		}
 
-		$credentials = array('username' => $_POST['username'], 'password' => $_POST['password']);				
+		$results = $this->mongo_db->where(array('email' => $_POST['email']) )->get('utilisateurs');
 
-		$results = $this->mongo_db->where($credentials)->get('utilisateurs');
-
+		//si un utilisateur a déjà cette email on retourne une erreur
 		if(!empty($results)) {
 			return redirect()->to('/public/login?error=le compte existe déjà');
 		}
 
-		$this->mongo_db->insert('utilisateurs', $credentials );
+		//sinon on crée un nouvel utilisateurs dans mongodb
+		$this->mongo_db->insert('utilisateurs', array('email' => $_POST['email'], 'password' => $_POST['password']) );
 
 		return redirect()->to('/public/login?success=le compte a été crée');
 	}
@@ -52,7 +62,7 @@ class Login extends BaseController
 	 * @return view
 	*/ 
 	public function logout() {
-		$this->cache->delete('username');
+		$this->cache->delete('email');
 		return redirect()->to('/public/');
 	}
 }
