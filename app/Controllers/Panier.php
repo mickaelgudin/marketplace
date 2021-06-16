@@ -7,7 +7,14 @@ class Panier extends BaseController
 {
 	public function index()
 	{
-		$data = $this->cache->get('user');
+
+		$user_start=$this->cache->get('email');
+		$user= str_replace('@', "key", $user_start);
+		
+
+
+		$data = $this->cache->get($user);
+		//$data = $this->cache->get('user');
 
 		if (is_null($data)) {
 			$data = array(
@@ -26,7 +33,13 @@ class Panier extends BaseController
 
 	public function deleteArticle()
 	{
-		$data = $this->cache->get('user');
+		
+		$user_start=$this->cache->get('email');
+		$user= str_replace('@', "key", $user_start);
+	
+		
+		$data = $this->cache->get($user);
+
 		$rem = $_POST['delete'];
 		for ($i = 0; $i <= sizeof($data)+1; $i++) {
 			if(is_null($data)){
@@ -38,7 +51,7 @@ class Panier extends BaseController
 				$test = "good";
 				unset($data['data'][$i]);
 				$data['data']=array_values($data['data']);
-				$this->cache->save('user', $data);
+				$this->cache->save($user, $data);
 				break;
 			} else {
 				$test = "rate";
