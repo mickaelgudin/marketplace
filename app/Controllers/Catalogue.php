@@ -56,7 +56,28 @@ class Catalogue extends BaseController
 			"quantite" => $quantite
 		);
 
-		array_push($panier['data'], $article);
+		//avant de push l'article dans le panier, parcourir le panier d'abord 
+		//verifier si 1er item du panier, deuxieme item du panier correspond à l'item du catalogue
+		//modifier la quantité du panier
+		
+		$nom_panier = array();
+		for ($i = 0; $i < sizeof($panier['data']); $i++) {
+			array_push($nom_panier, $panier['data'][$i]['nom']);
+		}
+
+		if (in_array($article["nom"], $nom_panier)) {
+			for ($i = 0; $i < sizeof($panier["data"]); $i++) {
+				if ($panier["data"][$i]["nom"] == $article["nom"]) {
+					$panier["data"][$i]["quantite"] =	$panier["data"][$i]["quantite"] + $quantite;
+				}
+			}
+		} else {
+			array_push($panier['data'], $article);
+		}
+
+		//	}
+		//1 = lunette = lunette 
+
 		$this->cache->save($user, $panier, 300);
 		$data = $this->catalogueItem();
 

@@ -35,10 +35,20 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="col-sm-1 col-md-1" style="text-align: center">
-                                    <input type="number" class="form-control" value="';
-                    echo array_values($article)[2];
-                    echo '">
+
+                                <td class="col-sm-1 col-md-1 text-center"><strong>
+                                
+                                    <form action="change-quantity" method="post">
+                                    <input type="submit" name="plus" value="+">
+                                    <input type="submit" name="moins" value="-">
+                                    <input type="hidden" class="btn btn-danger" name="quantity_id"
+                                    value="'.$i.'"/>
+                                    </form>';
+                                
+                                echo array_values($article)[2];
+                                echo '</strong></td>
+
+
                                 </td>
                                 <td class="col-sm-1 col-md-1 text-center"><strong>';
                     echo array_values($article)[1] . "€";
