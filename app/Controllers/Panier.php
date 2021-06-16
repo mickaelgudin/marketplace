@@ -6,16 +6,17 @@ use function PHPUnit\Framework\isNull;
 
 class Panier extends BaseController
 {
+
+	/**
+	 * page d'accueil du panier
+	 */
 	public function index()
 	{
-
+		//ici on récupère le panier de l'utilisateur dans la vaiable $data
 		$user_start = $this->cache->get('email');
 		$user = str_replace('@', "key", $user_start);
-
-
-
 		$data = $this->cache->get($user);
-		//$data = $this->cache->get('user');
+
 
 		if (is_null($data)) {
 			$data = array(
@@ -25,13 +26,11 @@ class Panier extends BaseController
 		} else {
 			echo view('panier', $data);
 		}
-
-		//$this->cache->save('user', $myArray, 300);
-		//$data = $this->cache->get('user');
-
-
 	}
 
+	/**
+	 * Supprimer un article en appuyant sur remove
+	 */
 	public function deleteArticle()
 	{
 
@@ -64,13 +63,16 @@ class Panier extends BaseController
 	}
 
 
+	/**
+	 * Supprimer un article lorsque la quantité atteint 0
+	 */
 	public function deleteArticleQuantity()
 	{
 
 		$user_start = $this->cache->get('email');
 		$user = str_replace('@', "key", $user_start);
 
-
+	
 		$data = $this->cache->get($user);
 
 		$quantity_id = $_POST['quantity_id'];
@@ -94,6 +96,9 @@ class Panier extends BaseController
 		$this->index();
 	}
 
+	/**
+	 * Modifier la quantité avec les boutons plus et moins 
+	 */
 
 	public function changeQuantity()
 	{
