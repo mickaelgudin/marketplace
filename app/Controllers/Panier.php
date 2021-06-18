@@ -72,7 +72,7 @@ class Panier extends BaseController
 		$user_start = $this->cache->get('email');
 		$user = str_replace('@', "key", $user_start);
 
-	
+
 		$data = $this->cache->get($user);
 
 		$quantity_id = $_POST['quantity_id'];
@@ -117,9 +117,6 @@ class Panier extends BaseController
 		$quantity_id = $_POST['quantity_id'];
 
 		if (isset($_POST['plus'])) {
-			$plus = $_POST['plus'];
-			echo $plus;
-
 			for ($i = 0; $i < sizeof($panier["data"]); $i++) {
 				if ($panier["data"][$i] == $panier["data"][$quantity_id]) {
 
@@ -129,8 +126,6 @@ class Panier extends BaseController
 		}
 
 		if (isset($_POST['moins'])) {
-			$moins = $_POST['moins'];
-			echo $moins;
 			for ($i = 0; $i < sizeof($panier["data"]); $i++) {
 				if ($panier["data"][$i] == $panier["data"][$quantity_id]) {
 					if ($panier["data"][$i]["quantite"] == 1) {

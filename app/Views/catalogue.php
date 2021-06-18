@@ -30,8 +30,8 @@
     <?php
            
                 foreach ($data as $article) {
-
-       echo' <div class="col-md-4 mb-3">
+?>
+        <div class="col-md-4 mb-3">
             <div class="card h-100">
                 <div class="d-flex justify-content-between position-absolute w-100">
                     <div class="label-sale">
@@ -46,16 +46,15 @@
                 </a>
                 <div class="card-body px-2 pb-2 pt-1">
                     <div class="d-flex justify-content-between">
-                        <form action="';echo (!isset($_GET["add"])) ? "add-panier" : ''; 
-                        
-                        echo '" method="post">
+                        <form action="<?php echo (!isset($_GET["add"])) ? "add-panier" : "";?>" method="post">
                             <div>
-                                <p class="h4 text-primary">'; 
+                                <p class="h4 text-primary">
+
+                                <?php
                                 echo array_values($article)[1];
-                                echo'€</p>
-                                <input type="hidden" name="prix" value="'; 
-                                echo array_values($article)[1];
-                                echo'" />
+                                ?>
+                                €</p>
+                                <input type="hidden" name="prix" value="<?php echo array_values($article)[1];?>" />
                             </div>
                             <div>
                                 <a href="#" class="text-secondary lead" data-toggle="tooltip" data-placement="left" title="Compare">
@@ -66,13 +65,18 @@
                     <p class="mb-0">
 
                         <strong>
-                            <a href="#" class="text-secondary">'; 
+                            <a href="#" class="text-secondary">
+
+                            <?php
                              echo array_values($article)[0];
-                             echo'</a>
-                            <input type="hidden" name="title" value="';
+                             ?>
+                             </a>
+                            <input type="hidden" name="title" value="
                             
+                            <?php
                             echo array_values($article)[0];
-                            echo'" />
+                            ?>
+                            " />
                         </strong>
                     </p>
                     <p class="mb-1">
@@ -92,7 +96,10 @@
                     </div>
                 </div>
             </div>
-        </div>'; }
+        </div>
+        
+        <?php
+            ;}
         ?>
 
        
