@@ -1,0 +1,19 @@
+POST 127.0.0.1:9200/produits/_doc
+
+{
+    "num":"L1",
+    "nom":"lunette",
+    "quantite_stock":2,
+    "prix":200
+
+}
+
+//get all elements
+GET 127.0.0.1:9200/produits/_doc/_search
+
+{
+  "query": {
+    "match_all":{}
+  }
+}
+
