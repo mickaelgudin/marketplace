@@ -1,0 +1,84 @@
+C:\Program Files\MongoDB\Server\4.4\bin>mongo
+
+
+
+db.createCollection( "utilisateurs", {
+   validator: { $jsonSchema: {
+      bsonType: "object",
+      properties: {
+         id: {
+            bsonType: "int",
+         },
+         email: {
+            bsonType : "string",    
+         },
+ 	 password: {
+            bsonType : "string",    
+         },
+ 	 nom: {
+            bsonType : "string",
+         },
+ 	 prenom: {
+            bsonType : "string",
+         },
+	 adresse: {
+            bsonType : "string",
+         }
+      }
+   } }
+} )
+
+db.utilisateurs.insertMany([{ 'id': NumberInt(1), email: "test@test.fr", password: 'test', nom: "gudin",  prenom: "yossef", adresse: "21 rue de paris" }])
+
+
+
+db.createCollection( "commandes", {
+   validator: { $jsonSchema: {
+      bsonType: "object",
+      properties: {
+         id: {
+            bsonType: "int",
+         },
+         prixTotal: {
+            bsonType : "int",    
+         },
+ 	 date: {
+            bsonType : "date",
+         },
+	 idUtilisateur: {
+            bsonType : "int",
+         }
+
+      }
+   } }
+} )
+
+
+db.commandes.insertMany([{ 'id': NumberInt(1), prixTotal: NumberInt(200) , date: ISODate("2014-01-01T08:15:39.736Z"), idUtilisateur: NumberInt(1) }])
+db.commandes.insertMany([{ 'id': NumberInt(2), prixTotal: NumberInt(400) , date: ISODate("2018-05-01T08:17:58.737Z"), idUtilisateur: NumberInt(1) }])
+
+
+
+
+db.createCollection( "ligneDeCommande", {
+   validator: { $jsonSchema: {
+      bsonType: "object",
+      properties: {
+         id: {
+            bsonType: "int",
+         },
+         quantité: {
+            bsonType : "int",    
+         },
+ 	 idProduit: {
+            bsonType : "int",
+         },
+	 idCommande: {
+            bsonType : "int",
+         }
+      }
+   } }
+} )
+
+
+db.ligneDeCommande.insertMany([{ 'id': NumberInt(1), quantité: NumberInt(4), idProduit: NumberInt(2), idCommande: NumberInt(2) }])
