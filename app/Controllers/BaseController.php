@@ -44,6 +44,7 @@ class BaseController extends Controller
 	 */
 	protected $mongo_db;
 
+	protected $cache;
 
 	/**
 	 * Constructor.
@@ -56,6 +57,10 @@ class BaseController extends Controller
 	{
 		// Do Not Edit This Line
 		parent::initController($request, $response, $logger);
+
+		//init redis
+		$this->cache = \Config\Services::cache();
+		//init mongo_db
 		$this->mongo_db = new Mongo_db(array('activate'=>'mongo_db'));
 
 		//--------------------------------------------------------------------

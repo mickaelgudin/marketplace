@@ -1,3 +1,7 @@
+<?php
+    $this->cache = \Config\Services::cache();
+	$connectedUsername = $this->cache->get('email');
+?>
 <html>
 
 <head>
@@ -19,17 +23,25 @@
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="login"><i class="fas fa-user"></i> Se connecter/ S'inscrire</a>
+                        <a class="nav-link" href="<?=!empty($connectedUsername) ? 'home' : 'login' ?>">
+                            <i class="fas fa-user"></i> 
+                            <?= !empty($connectedUsername ) ? $connectedUsername : 'Se connecter/ S\'inscrire' ?> 
+                        </a>
                     </li>
-                    <li class="nav-item">
+                    <?php if(!empty($connectedUsername) ) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="logout"><i class="fas fa-sign-out-alt"></i> Se déconnecter </a>
+                        </li>
+                        <li class="nav-item">
                         <a class="nav-link" href="catalogue"><i class="fas fa-search"></i> Catalogue</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="panier"><i class="fas fa-shopping-basket"></i> Panier</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="commande"><i class="fas fa-clipboard-list"></i> Commande</a>
-                    </li>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="panier"><i class="fas fa-shopping-basket"></i> Panier</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="commande"><i class="fas fa-clipboard-list"></i> Commande</a>
+                        </li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </nav>
