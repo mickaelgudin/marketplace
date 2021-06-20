@@ -17,7 +17,6 @@ class Panier extends BaseController
 		$user = str_replace('@', "key", $user_start);
 		$data = $this->cache->get($user);
 
-
 		if (is_null($data)) {
 			$data = array(
 				"data" => array()
@@ -141,5 +140,31 @@ class Panier extends BaseController
 
 		$this->cache->save($user, $panier, 300);
 		$this->index();
+	}
+
+	/**
+	 * la commande est validé, on traduit le panier en une commande
+	 */
+	public function checkout() {
+		$user_start = $this->cache->get('email');
+		$user = str_replace('@', "key", $user_start);
+		$panier = $this->cache->get($user);
+		var_dump($panier["data"]);
+
+		$lignesDeCommande = array();
+
+		foreach($panier["data"] as $article) {
+			array_push(
+				$lignesDeCommande, 
+				array(
+					'numProduit' => $article['num'], 
+					'quantite' => intval($article["quantite"]),
+					'prixUnitaire' => intval($article["prix"]),
+					'idCommande' => intval(0)
+				)	
+			);
+		}
+
+		$this->mongo_db->batch_insert('ligneDeCommande', $lignesDeCommande);
 	}
 }

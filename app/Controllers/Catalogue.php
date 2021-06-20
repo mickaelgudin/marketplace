@@ -46,14 +46,11 @@ class Catalogue extends BaseController
 			);
 		}
 
-		$prix = $_POST['prix'];
-		$title = $_POST['title'];
-		$quantite = $_POST['quantite'];
-
 		$article = array(
-			"nom" => $title,
-			"prix" => $prix,
-			"quantite" => $quantite
+			"num" => $_POST['num'],
+			"nom" => $_POST['nom'],
+			"prix" => $_POST['prix'],
+			"quantite" => $_POST['quantite']
 		);
 
 		//avant de push l'article dans le panier, parcourir le panier d'abord 
@@ -67,7 +64,9 @@ class Catalogue extends BaseController
 
 		if (in_array($article["nom"], $nom_panier)) {
 			for ($i = 0; $i < sizeof($panier["data"]); $i++) {
-				if ($panier["data"][$i]["nom"] == $article["nom"]) {
+				if ($panier["data"][$i]["num"] == $article["num"]) {
+					var_dump($panier["data"]);
+
 					$panier["data"][$i]["quantite"] =	$panier["data"][$i]["quantite"] + $quantite;
 				}
 			}

@@ -1,5 +1,5 @@
 <?php include "menu.php"; ?>
-
+<?php $totalPrix=0 ?>
 
 
 
@@ -19,6 +19,7 @@
             if (!empty($data)) {
                 $i = 0;
                 foreach ($data as $article) {
+                    $totalPrix += array_values($article)[3] * array_values($article)[2];
             ?>
                     <tr>
                         <td class="col-sm-8 col-md-6">
@@ -27,11 +28,9 @@
                                 <div class="media-body">
                                     <h4 class="media-heading">
                                         <a href="#">
-                                            <?php echo array_values($article)[0]; ?>
+                                            <?php echo array_values($article)[1]; ?>
                                         </a>
                                     </h4>
-                                    <h5 class="media-heading"> by <a href="#">Brand name</a></h5>
-                                    <span>Status: </span><span class="text-warning"><strong>In Stock</strong></span>
                                 </div>
                             </div>
                         </td>
@@ -44,18 +43,16 @@
                                     <input type="hidden" class="btn btn-danger" name="quantity_id" value="<?php echo $i; ?>" />
                                 </form>
                                 <?php
-                                echo array_values($article)[2];
+                                echo array_values($article)[3];
                                 ?>
                             </strong></td>
                         </td>
                         <td class="col-sm-1 col-md-1 text-center"><strong>
                                 <?php
-                                echo array_values($article)[1];
+                                echo array_values($article)[2];
                                 ?>€</strong></td>
                         <td class="col-sm-1 col-md-1 text-center"><strong>
-                                <?php
-                                echo array_values($article)[1] * array_values($article)[2];
-                                ?>€</strong></td>
+                                </strong></td>
                         <td class="col-sm-1 col-md-1">
                             <form action="delete-article" method="post">
                                 <input type="hidden" class="btn btn-danger" name="delete" value="<?php echo $i; ?>" />
@@ -87,16 +84,7 @@
                 <h3>Total</h3>
             </td>
             <td class="text-right">
-                <h3><strong>
-                        <?php
-                        $total = 0;
-                        foreach ($data as $article) {
-                            $total += array_values($article)[1] * array_values($article)[2];
-                        }
-                        echo $total;
-                        ?>
-                        €</strong>
-                </h3>
+                <h3><strong> <?=$totalPrix?> €</strong></h3>
             </td>
             </tr>
             <tr>
@@ -105,12 +93,12 @@
                 <td> </td>
                 <td>
                     <button type="button" class="btn btn-default">
-                        <span class="fa fa-shopping-cart"></span> Continue Shopping
+                        <span class="fa fa-shopping-cart"></span> <a href="catalogue">Continue Shopping</a>
                     </button>
                 </td>
                 <td>
                     <button type="button" class="btn btn-success">
-                        Checkout <span class="fa fa-play"></span>
+                        <a href="checkout" style="color:white;">Checkout</a> <span class="fa fa-play"></span>
                     </button>
                 </td>
             </tr>
