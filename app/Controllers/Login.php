@@ -62,7 +62,14 @@ class Login extends BaseController
 	 * @return view
 	*/ 
 	public function logout() {
+
+		//lorsqu'on se deconnecte on supprime le panier de l'utilisateur
+		$user_start = $this->cache->get('email');
+		$user = str_replace('@', "key", $user_start);
+		$this->cache->delete($user);
+
 		$this->cache->delete('email');
+		
 		return redirect()->to('/public/');
 	}
 }
