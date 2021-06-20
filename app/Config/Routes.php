@@ -44,6 +44,7 @@ $routes->post('/create-account', 'Login::createAccount');
 $routes->get('/catalogue', 'Catalogue::index');
 $routes->get('/panier', 'Panier::index');
 $routes->get('/commande', 'Commande::index');
+$routes->get('/commandeDetail/(:num)', 'CommandeDetail::index/$1');
 
 /*
  * --------------------------------------------------------------------
