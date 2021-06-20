@@ -7,7 +7,27 @@ POST 127.0.0.1:9200/produits/_doc
     "prix":200
 
 }
+{
+    "num":"L2",
+    "nom":"lunette",
+    "quantite_stock":4,
+    "prix":300
 
+}
+{
+    "num":"L3",
+    "nom":"lunette",
+    "quantite_stock":0,
+    "prix":400
+
+}
+{
+    "num":"B1",
+    "nom":"bague",
+    "quantite_stock":3,
+    "prix":1200
+
+}
 //get all elements
 GET 127.0.0.1:9200/produits/_doc/_search
 
