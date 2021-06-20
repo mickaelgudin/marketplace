@@ -1,7 +1,3 @@
-C:\Program Files\MongoDB\Server\4.4\bin>mongo
-
-
-
 db.createCollection( "utilisateurs", {
    validator: { $jsonSchema: {
       bsonType: "object",
@@ -28,8 +24,7 @@ db.createCollection( "utilisateurs", {
    } }
 } )
 
-db.utilisateurs.insertMany([{ 'id': NumberInt(1), email: "test@test.fr", password: 'test', nom: "gudin",  prenom: "yossef", adresse: "21 rue de paris" }])
-
+db.utilisateurs.insertMany([{ 'id': NumberInt(1), email: "test@test.fr", password: 'test', nom: "name",  prenom: "test", adresse: "21 rue de paris" }])
 
 
 db.createCollection( "commandes", {
@@ -42,22 +37,19 @@ db.createCollection( "commandes", {
          prixTotal: {
             bsonType : "int",    
          },
- 	 date: {
+         date: {
             bsonType : "date",
          },
-	 idUtilisateur: {
+         idUtilisateur: {
             bsonType : "int",
          }
-
       }
    } }
 } )
 
 
-db.commandes.insertMany([{ 'id': NumberInt(1), prixTotal: NumberInt(200) , date: ISODate("2014-01-01T08:15:39.736Z"), idUtilisateur: NumberInt(1) }])
-db.commandes.insertMany([{ 'id': NumberInt(2), prixTotal: NumberInt(400) , date: ISODate("2018-05-01T08:17:58.737Z"), idUtilisateur: NumberInt(1) }])
-
-
+db.commandes.insertMany([{ 'id': NumberInt(1), prixTotal: NumberInt(700) , date: ISODate("2014-01-01T08:15:39.736Z"), idUtilisateur: NumberInt(1) }])
+db.commandes.insertMany([{ 'id': NumberInt(2), prixTotal: NumberInt(1200) , date: ISODate("2018-05-01T08:17:58.737Z"), idUtilisateur: NumberInt(1) }])
 
 
 db.createCollection( "ligneDeCommande", {
@@ -67,13 +59,16 @@ db.createCollection( "ligneDeCommande", {
          id: {
             bsonType: "int",
          },
-         quantité: {
+         quantite: {
             bsonType : "int",    
          },
- 	 idProduit: {
+         prixUnitaire: {
             bsonType : "int",
          },
-	 idCommande: {
+         numProduit: {
+            bsonType : "string",
+         },
+         idCommande: {
             bsonType : "int",
          }
       }
@@ -81,4 +76,8 @@ db.createCollection( "ligneDeCommande", {
 } )
 
 
-db.ligneDeCommande.insertMany([{ 'id': NumberInt(1), quantité: NumberInt(4), idProduit: NumberInt(2), idCommande: NumberInt(2) }])
+db.ligneDeCommande.insertMany([
+   { 'id': NumberInt(1), prixUnitaire: NumberInt(200), quantite: NumberInt(2), numProduit: "L1", idCommande: NumberInt(1) },
+   { 'id': NumberInt(2), prixUnitaire: NumberInt(300), quantite: NumberInt(1), numProduit: "L2", idCommande: NumberInt(1) },
+   { 'id': NumberInt(3), prixUnitaire: NumberInt(1200), quantite: NumberInt(1), numProduit: "B1", idCommande: NumberInt(2) },
+])
