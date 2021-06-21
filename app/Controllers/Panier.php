@@ -8,11 +8,12 @@ class Panier extends BaseController
 {
 
 	/**
-	 * page d'accueil du panier
+	 * Page d'accueil du panier
+	 * Retourne le panier associé à un utilisateur pour l'afficher sur la page
+	 * 
 	 */
 	public function index()
 	{
-		//ici on récupère le panier de l'utilisateur dans la vaiable $data
 		$user_start = $this->cache->get('email');
 		$user = str_replace('@', "key", $user_start);
 		$data = $this->cache->get($user);
@@ -28,7 +29,7 @@ class Panier extends BaseController
 	}
 
 	/**
-	 * Supprimer un article en appuyant sur remove
+	 * Supprime un article en appuyant sur le bouton remove
 	 */
 	public function deleteArticle()
 	{
@@ -145,25 +146,26 @@ class Panier extends BaseController
 	/**
 	 * la commande est validé, on traduit le panier en une commande
 	 */
-	public function checkout() {
+	public function checkout()
+	{
 		$user_start = $this->cache->get('email');
 		$user = str_replace('@', "key", $user_start);
 		$panier = $this->cache->get($user);
 		$lastCommande = $this->mongo_db->select(array("id"))->order_by(array('id' => 'DESC'))->limit(1)->get("commandes");
-		
+
 		//si aucune commande n'avait ete fait le premiere id est 1
 		$nextIdCommande = 1;
-		if(!empty($lastCommande) ) {
+		if (!empty($lastCommande)) {
 			$nextIdCommande = ($lastCommande[0]['id']) + 1;
 		}
-			
+
 		//insertion de la commande
 		$commandeInserted = $this->insertCommande($nextIdCommande, $user_start);
-		
+
 		//insere des lignes de commandes(a partir des articles du panier)
-		if(!empty($commandeInserted) ) {
+		if (!empty($commandeInserted)) {
 			$hasBeenInserted = $this->insertLignesDeCommande($panier["data"], $nextIdCommande);
-			if($hasBeenInserted == false) {
+			if ($hasBeenInserted == false) {
 				return redirect()->to('/public/panier?error=les lignes de commande n\'ont pas ete cree');
 			}
 
@@ -178,35 +180,37 @@ class Panier extends BaseController
 	/**
 	 * insertion de la nouvelle commande
 	 */
-	private function insertCommande($nextIdCommande, $user_start) {
+	private function insertCommande($nextIdCommande, $user_start)
+	{
 		$connectedUser =  $this->mongo_db->select(array("id"))->where(array("email" => $user_start))->limit(1)->get("utilisateurs");
-		
+
 		//traduction du panier en commande
 		$newCommande = array(
-			'id' => intval($nextIdCommande), 
+			'id' => intval($nextIdCommande),
 			'prixTotal' => intval($_POST['totalPrix']),
-			'date' => new \MongoDB\BSON\UTCDateTime(time()*1000),
+			'date' => new \MongoDB\BSON\UTCDateTime(time() * 1000),
 			'idUtilisateur' => intval($connectedUser[0]['id'])
 		);
-		
+
 		return $this->mongo_db->insert('commandes',  $newCommande);
 	}
 
 	/**
 	 * insertion des lignes de commande
 	 */
-	private function insertLignesDeCommande($lignesDuPanier, $idCommande) {
+	private function insertLignesDeCommande($lignesDuPanier, $idCommande)
+	{
 		$lignesDeCommande = array();
 
-		foreach($lignesDuPanier as $article) {
+		foreach ($lignesDuPanier as $article) {
 			array_push(
-				$lignesDeCommande, 
+				$lignesDeCommande,
 				array(
-					'numProduit' => $article['num'], 
+					'numProduit' => $article['num'],
 					'quantite' => intval($article["quantite"]),
 					'prixUnitaire' => intval($article["prix"]),
 					'idCommande' => intval($idCommande)
-				)	
+				)
 			);
 		}
 

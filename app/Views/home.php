@@ -7,10 +7,11 @@
 			<input type="radio" name="fancy" value="article1" id="article1" />
 			<input type="radio" name="fancy" value="article2" id="article2" />
 			<input type="radio" name="fancy" value="article3" id="article3" />			
-			<label for="start">Bienvenue sur notre site</label>
-            <label for="article1"><img src="http://placeimg.com/640/480/any" alt="Product"></label>
-            <label for="article2"><img src="http://placeimg.com/640/482/any" alt="Product"></label>
-            <label for="article3"> <img src="http://placeimg.com/640/481/any" alt="Product"></label>
+            <label for="article1"><img src="image_mignone1.png" alt="Product"></label>
+            <label for="article2"><img src="bague1.png" alt="Product"></label>
+            <label for="article3"> <img src="collier1.png" alt="Product"></label>
+			<label for="article3"> <img src="lunette1.png" alt="Product"></label>
+			
 
 			<div class="keys">Naviguez avec les flèches du clavier</div>
 	</form>

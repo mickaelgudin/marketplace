@@ -4,14 +4,18 @@ namespace App\Controllers;
 
 class Catalogue extends BaseController
 {
+	/**
+	 * Affiche la page catalogue, lorsqu'on arrive sur le chemin /catalogue
+	 */
 	public function index()
 	{
-
-
 		$data = $this->catalogueItem();
 		echo view('catalogue', $data);
 	}
 
+	/**
+	 * Renvoi un tableau contenant des données fictives
+	 */
 	public function catalogueItem()
 	{
 		$data = array(
@@ -30,6 +34,12 @@ class Catalogue extends BaseController
 		return $data;
 	}
 
+	/**
+	 * Ajoute un article du catalogue au panier
+	 * Si l'article existe déjà dans le panier, la quantité augmente
+	 * Le panier correspond à un utilisateur
+	 * Le panier se supprime 5 min après l'ajout du dernier article
+	 */
 	public function addPanier()
 	{
 
@@ -53,10 +63,8 @@ class Catalogue extends BaseController
 			"quantite" => $_POST['quantite']
 		);
 
-		//avant de push l'article dans le panier, parcourir le panier d'abord 
-		//verifier si 1er item du panier, deuxieme item du panier correspond à l'item du catalogue
-		//modifier la quantité du panier
-		
+		$quantite = $_POST['quantite'];
+
 		$nom_panier = array();
 		for ($i = 0; $i < sizeof($panier['data']); $i++) {
 			array_push($nom_panier, $panier['data'][$i]['nom']);
@@ -73,9 +81,6 @@ class Catalogue extends BaseController
 		} else {
 			array_push($panier['data'], $article);
 		}
-
-		//	}
-		//1 = lunette = lunette 
 
 		$this->cache->save($user, $panier, 300);
 		$data = $this->catalogueItem();
