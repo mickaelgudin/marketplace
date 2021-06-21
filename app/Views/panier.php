@@ -97,9 +97,12 @@
                     </button>
                 </td>
                 <td>
-                    <button type="button" class="btn btn-success">
-                        <a href="checkout" style="color:white;">Checkout</a> <span class="fa fa-play"></span>
-                    </button>
+                    <form action="Panier/checkout" method="POST">
+                        <input hidden type="number" name="totalPrix" value="<?=$totalPrix?>"/>
+                        <button type="submit" class="btn btn-success">
+                            Checkout <span class="fa fa-play"></span>
+                        </button>
+                    </form>
                 </td>
             </tr>
         </tbody>

@@ -149,18 +149,41 @@ class Panier extends BaseController
 		$user_start = $this->cache->get('email');
 		$user = str_replace('@', "key", $user_start);
 		$panier = $this->cache->get($user);
-		var_dump($panier["data"]);
+		$lastCommande = $this->mongo_db->select(array("id"))->order_by(array('id' => 'DESC'))->limit(1)->get("commandes");
+		
+		if(!empty($lastCommande) ) {
+			$nextIdCommande = ($lastCommande[0]['id']) + 1;
+			$prixTotalCommande = intVal($_POST['totalPrix']);
+			var_dump($nextIdCommande);
+			var_dump($prixTotalCommande);
+			
+			$connectedUser =  $this->mongo_db->select(array("id"))->where(array("email" => $user_start))->limit(1)->get("utilisateurs");
+			$idConnectedUser = $connectedUser[0]['id'];
 
+			$newCommande = array(
+				'id' => intval($nextIdCommande), 
+				'prixTotal' => intval($prixTotalCommande),
+				'date' => new \MongoDB\BSON\UTCDateTime(time()*1000),
+				'idUtilisateur' => intval($idConnectedUser)
+			);
+			
+			$this->mongo_db->insert('commandes',  $newCommande);
+			$this->insertLignesDeCommande($panier["data"], $nextIdCommande);
+		}
+
+	}
+
+	private function insertLignesDeCommande($lignesDuPanier, $idCommande) {
 		$lignesDeCommande = array();
 
-		foreach($panier["data"] as $article) {
+		foreach($lignesDuPanier as $article) {
 			array_push(
 				$lignesDeCommande, 
 				array(
 					'numProduit' => $article['num'], 
 					'quantite' => intval($article["quantite"]),
 					'prixUnitaire' => intval($article["prix"]),
-					'idCommande' => intval(0)
+					'idCommande' => intval($idCommande)
 				)	
 			);
 		}
