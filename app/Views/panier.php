@@ -4,6 +4,13 @@
 
 
 <div class="col-sm-12 col-md-10 col-md-offset-1">
+    <?php if(isset($_GET['error'])) : ?>
+        <div class="alert alert-danger" role="alert"><?=$_GET['error']?></div>
+    <?php endif; ?>
+    <?php if(isset($_GET['success'])) : ?>
+        <div class="alert alert-success" role="alert"><?=$_GET['success']?></div>
+    <?php endif; ?>
+
     <table class="table table-hover">
         <thead>
             <tr>
@@ -68,22 +75,32 @@
             <?php
                     $i++;
                 }
-            } else {
-                echo "panier vide";
-            }
-
+            } 
 
             ?>
 
 
             </tr>
+
+            <?php if(empty($data) ): ?>
+                <tr>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td>
+                        <h3 style="color:gray">Le panier est vide</h3>
+                    </td>
+                    <td></td>
+                </tr>
+            <?php endif;?>
+
             <td> </td>
             <td> </td>
             <td> </td>
             <td>
                 <h3>Total</h3>
             </td>
-            <td class="text-right">
+            <td class="text-left">
                 <h3><strong> <?=$totalPrix?> €</strong></h3>
             </td>
             </tr>
@@ -97,12 +114,15 @@
                     </button>
                 </td>
                 <td>
-                    <form action="Panier/checkout" method="POST">
-                        <input hidden type="number" name="totalPrix" value="<?=$totalPrix?>"/>
-                        <button type="submit" class="btn btn-success">
-                            Checkout <span class="fa fa-play"></span>
-                        </button>
-                    </form>
+                    <!--On ne peut pas commander si il n'y a pas d'article dans le panier-->
+                    <?php if(!empty($data) ): ?>
+                        <form action="Panier/checkout" method="POST">
+                            <input hidden type="number" name="totalPrix" value="<?=$totalPrix?>"/>
+                            <button type="submit" class="btn btn-success">
+                                Commander <span class="fa fa-play"></span>
+                            </button>
+                        </form>
+                    <?php endif;?>
                 </td>
             </tr>
         </tbody>

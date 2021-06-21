@@ -21,9 +21,9 @@ class Panier extends BaseController
 			$data = array(
 				"data" => array()
 			);
-			echo  view("panier", $data);
+			return  view("panier", $data);
 		} else {
-			echo view('panier', $data);
+			return view('panier', $data);
 		}
 	}
 
@@ -151,28 +151,50 @@ class Panier extends BaseController
 		$panier = $this->cache->get($user);
 		$lastCommande = $this->mongo_db->select(array("id"))->order_by(array('id' => 'DESC'))->limit(1)->get("commandes");
 		
+		//si aucune commande n'avait ete fait le premiere id est 1
+		$nextIdCommande = 1;
 		if(!empty($lastCommande) ) {
 			$nextIdCommande = ($lastCommande[0]['id']) + 1;
-			$prixTotalCommande = intVal($_POST['totalPrix']);
-			var_dump($nextIdCommande);
-			var_dump($prixTotalCommande);
-			
-			$connectedUser =  $this->mongo_db->select(array("id"))->where(array("email" => $user_start))->limit(1)->get("utilisateurs");
-			$idConnectedUser = $connectedUser[0]['id'];
-
-			$newCommande = array(
-				'id' => intval($nextIdCommande), 
-				'prixTotal' => intval($prixTotalCommande),
-				'date' => new \MongoDB\BSON\UTCDateTime(time()*1000),
-				'idUtilisateur' => intval($idConnectedUser)
-			);
-			
-			$this->mongo_db->insert('commandes',  $newCommande);
-			$this->insertLignesDeCommande($panier["data"], $nextIdCommande);
 		}
+			
+		//insertion de la commande
+		$commandeInserted = $this->insertCommande($nextIdCommande, $user_start);
+		
+		//insere des lignes de commandes(a partir des articles du panier)
+		if(!empty($commandeInserted) ) {
+			$hasBeenInserted = $this->insertLignesDeCommande($panier["data"], $nextIdCommande);
+			if($hasBeenInserted == false) {
+				return redirect()->to('/public/panier?error=les lignes de commande n\'ont pas ete cree');
+			}
 
+			//on vide le panier et on confirme la creation de la commande a l'utilisateur
+			$this->cache->save($user, array());
+			return redirect()->to('/public/panier?success=la commande a bien ete cree');
+		} else {
+			return redirect()->to('/public/panier?error=la commande a echoue');
+		}
 	}
 
+	/**
+	 * insertion de la nouvelle commande
+	 */
+	private function insertCommande($nextIdCommande, $user_start) {
+		$connectedUser =  $this->mongo_db->select(array("id"))->where(array("email" => $user_start))->limit(1)->get("utilisateurs");
+		
+		//traduction du panier en commande
+		$newCommande = array(
+			'id' => intval($nextIdCommande), 
+			'prixTotal' => intval($_POST['totalPrix']),
+			'date' => new \MongoDB\BSON\UTCDateTime(time()*1000),
+			'idUtilisateur' => intval($connectedUser[0]['id'])
+		);
+		
+		return $this->mongo_db->insert('commandes',  $newCommande);
+	}
+
+	/**
+	 * insertion des lignes de commande
+	 */
 	private function insertLignesDeCommande($lignesDuPanier, $idCommande) {
 		$lignesDeCommande = array();
 
@@ -188,6 +210,6 @@ class Panier extends BaseController
 			);
 		}
 
-		$this->mongo_db->batch_insert('ligneDeCommande', $lignesDeCommande);
+		return $this->mongo_db->batch_insert('ligneDeCommande', $lignesDeCommande);
 	}
 }
