@@ -9,29 +9,14 @@ class Catalogue extends BaseController
 	 */
 	public function index()
 	{
-		$data = $this->catalogueItem();
-		echo view('catalogue', $data);
-	}
+		$this->cache = \Config\Services::cache();
+		$connectedUsername = $this->cache->get('email');
 
-	/**
-	 * Renvoi un tableau contenant des données fictives
-	 */
-	public function catalogueItem()
-	{
-		$data = array(
-			"data" => array(
-				"article1" => array(
-					"nom" => "lunette",
-					"prix" => 3,
-				),
-				"article2" => array(
-					"nom" => "montre",
-					"prix" => 10,
-				)
-			)
-		);
-
-		return $data;
+		if(!empty($connectedUsername) ) {
+			return view('catalogue');
+		} else {
+			return view('home');
+		}
 	}
 
 	/**
@@ -42,10 +27,13 @@ class Catalogue extends BaseController
 	 */
 	public function addPanier()
 	{
-
 		$this->cache = \Config\Services::cache();
-
 		$user_start = $this->cache->get('email');
+
+		if(empty($user_start)) {
+			return view('home');
+		}
+
 		$user = str_replace('@', "key", $user_start);
 
 		if ($this->cache->get($user) != null) {
@@ -65,16 +53,14 @@ class Catalogue extends BaseController
 
 		$quantite = $_POST['quantite'];
 
-		$nom_panier = array();
+		$num_panier = array();
 		for ($i = 0; $i < sizeof($panier['data']); $i++) {
-			array_push($nom_panier, $panier['data'][$i]['nom']);
+			array_push($num_panier, $panier['data'][$i]['num']);
 		}
 
-		if (in_array($article["nom"], $nom_panier)) {
+		if (in_array($article["num"], $num_panier)) {
 			for ($i = 0; $i < sizeof($panier["data"]); $i++) {
 				if ($panier["data"][$i]["num"] == $article["num"]) {
-					var_dump($panier["data"]);
-
 					$panier["data"][$i]["quantite"] =	$panier["data"][$i]["quantite"] + $quantite;
 				}
 			}
@@ -83,8 +69,6 @@ class Catalogue extends BaseController
 		}
 
 		$this->cache->save($user, $panier, 300);
-		$data = $this->catalogueItem();
-
-		echo view('catalogue', $data);
+		return view('catalogue');
 	}
 }

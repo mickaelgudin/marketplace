@@ -130,7 +130,7 @@ class Panier extends BaseController
 				if ($panier["data"][$i] == $panier["data"][$quantity_id]) {
 					if ($panier["data"][$i]["quantite"] == 1) {
 						$this->deleteArticleQuantity();
-						exit();
+						return view('panier');
 					}
 					$panier["data"][$quantity_id]["quantite"] =	$panier["data"][$quantity_id]["quantite"] - 1;
 				}
@@ -140,7 +140,7 @@ class Panier extends BaseController
 
 
 		$this->cache->save($user, $panier, 300);
-		$this->index();
+		return view('panier');
 	}
 
 	/**

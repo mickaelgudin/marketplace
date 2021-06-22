@@ -28,6 +28,60 @@ POST 127.0.0.1:9200/produits/_doc
     "prix":1200
 
 }
+
+
+
+
+{
+    "num":"B2",
+    "nom":"bague",
+    "quantite_stock":2,
+    "prix":1300
+}
+{
+    "num":"C1",
+    "nom":"collier",
+    "quantite_stock": 8,
+    "prix": 250
+
+}
+{
+    "num":"C2",
+    "nom":"collier",
+    "quantite_stock": 5,
+    "prix": 450
+
+}
+{
+    "num":"C3",
+    "nom":"collier",
+    "quantite_stock": 3,
+    "prix": 1100
+
+}
+{
+    "num":"M1",
+    "nom":"montre",
+    "quantite_stock": 12,
+    "prix": 85
+
+}
+{
+    "num":"M2",
+    "nom":"montre",
+    "quantite_stock": 6,
+    "prix": 99
+
+}
+{
+    "num":"M3",
+    "nom":"montre",
+    "quantite_stock": 8,
+    "prix": 150
+
+}
+
+
 //get all elements
 GET 127.0.0.1:9200/produits/_doc/_search
 
