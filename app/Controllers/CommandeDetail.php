@@ -6,29 +6,19 @@ class CommandeDetail extends BaseController
 {
 	public function index($idCommande = 0)
 	{
-		//récupérer le numéro de la commande
-		echo $idCommande;
-		///$parameter=$this->uri->segment(2);
-		$data = $this->getCommandeItem();
-		echo view('commandeDetail',$data);
+		$dataArray = array("data"=>$this->getCommandeItem($idCommande));
+		echo view('commandeDetail',$dataArray);
 	}
-	public function getCommandeItem()
+	public function getCommandeItem($idCommande = 0)
 	{
-		$data = array(
-			"tabArticle" => array(
-				"article1" => array(
-					"nom" => "lunette",
-					"quantité"=>3,
-					"prix" => 3,
-				),
-				"article2" => array(
-					"nom" => "montre",
-					"quantité"=>2,
-					"prix" => 10,
-				)
-			)
-		);
-
-		return $data;
+		$data = $this->mongo_db->where(array('idCommande' =>(int)$idCommande) )
+								  ->get('ligneDeCommande');
+								  
+		$dataArray = array();
+		array_push($dataArray,$idCommande);
+		foreach($data as $j){
+			array_push($dataArray, array('id'=> $j['id'], 'prixUnitaire'=> $j['prixUnitaire'] , 'quantite'=>$j['quantite'],'numProduit'=>$j['numProduit']));
+		}
+		return $dataArray;
 	}
 }

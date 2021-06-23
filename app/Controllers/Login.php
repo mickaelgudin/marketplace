@@ -23,7 +23,6 @@ class Login extends BaseController
 
 		$results = $this->mongo_db->where(array('email' => $_POST['email'], 'password' => $_POST['password']) )
 								  ->get('utilisateurs');
-
 		//on vérifie que le compte existe bien						  
 		if(!empty($results)) {
 			//on crée une variable dans redis en utilisant les méthodes de cache de CodeIgniter
@@ -72,4 +71,6 @@ class Login extends BaseController
 		
 		return redirect()->to('/public/');
 	}
+	
+
 }
