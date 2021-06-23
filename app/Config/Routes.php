@@ -49,7 +49,8 @@ $routes->post('/delete-article', 'Panier::deleteArticle');
 $routes->post('/change-quantity', 'Panier::changeQuantity');
 
 $routes->get('/commande', 'Commande::index');
-$routes->get('commandeDetail(:num)', 'CommandeDetail::index/$1');
+$routes->get('/commandeDetail(:num)', 'CommandeDetail::index/$1');
+$routes->get('/checkout', 'Panier::checkout');
 
 /*
  * --------------------------------------------------------------------

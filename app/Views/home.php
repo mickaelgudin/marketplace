@@ -3,14 +3,13 @@
 <?php include "menu.php"; ?>
 <form>
 
-			<input type="radio" name="fancy" autofocus value="start" id="start" />
 			<input type="radio" name="fancy" value="article1" id="article1" />
 			<input type="radio" name="fancy" value="article2" id="article2" />
 			<input type="radio" name="fancy" value="article3" id="article3" />			
-			<label for="start">Bienvenue sur notre site</label>
-            <label for="article1"><img src="http://placeimg.com/640/480/any" alt="Product"></label>
-            <label for="article2"><img src="http://placeimg.com/640/482/any" alt="Product"></label>
-            <label for="article3"> <img src="http://placeimg.com/640/481/any" alt="Product"></label>
+            <label for="article1"><img src="L1.png" alt="Product"></label>
+            <label for="article2"><img src="L2.png" alt="Product"></label>
+            <label for="article3"> <img src="B1.png" alt="Product"></label>
+			
 
 			<div class="keys">Naviguez avec les flèches du clavier</div>
 	</form>
