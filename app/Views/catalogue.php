@@ -3,29 +3,39 @@
     <div class="row align-items-center justify-content-between">
         <div class="wrap col-md-3 col-5 text-right order-md-1">
             <div class="search">
-                <input type="text" id="searchContent" class="searchTerm" placeholder="What are you looking for?">
-                <button type="submit" class="searchButton">
+                <input type="text" id="searchContent" class="searchTerm" placeholder="Produit recherché?">
+                <button type="submit" class="searchButton" onclick="sendSearchElasticByPriceAndPreviousName()">
                     <i class="fa fa-search"></i>
                 </button>
             </div>
         </div>
 
         <div class="col-md-3 order-md-0 mt-2 mt-md-0">
-            <select class="form-control form-control-sm">
-                <option value="">Sort By</option>
-                <option value="">Price</option>
+            <label for="sorted-select"> Trier par : </label>
+            <select class="form-control form-control-sm" id="sorted-select" onchange="sendSearchElasticByPriceAndPreviousName()">
+                <option value="nom-asc" type="text">Nom A à Z</option>
+                <option value="nom-desc" type="text">Nom Z à A</option>
+                <option value="prix-asc" type="text">Prix croissant</option>
+                <option value="prix-desc" type="text">Prix décroissant</option>
             </select>  
         </div>
 
 
         <div class="slidecontainer">
-            <label for="price-min" id="price-min-label">Price min : </label>
+            <label for="price-min" id="price-min-label">Prix min : </label>
             <input type="number" data-type="range" name="price-min" id="valueMinPriceFilter" value="1" min="1" max="5000">
-            <label for="price-max" id="price-max-label">Price max : </label>
+            <label for="price-max" id="price-max-label">Prix max : </label>
             <input type="number" data-type="range" name="price-max" id="valueMaxPriceFilter" value="5000" min="1" max="5000">
-            <button id = "btnPriceFilter" class="btn btn-outline-primary btn-block">Apply</button>
+            <button id = "btnPriceFilter" class="btn btn-outline-primary btn-block" onclick="sendSearchElasticByPriceAndPreviousName()">
+                Appliquer le filtre
+            </button>
         </div>
         
+        <div>
+            <button id="btn-reset-filters" onclick="resetFilters()">Supprimer les filtres</button>
+        </div>
+
+
     </div>
 </div>
 
@@ -68,10 +78,11 @@
             </a>
             </div>
         </div>
-        <p class="mb-0"> 
+        <p class="mb-2" > 
             <strong>
-            <a href="#" id="product-title" class="text-secondary">{{nomProduit}} {{numProduit}}</a>
+            <a href="#" id="product-title" class="text-secondary">Nom : {{nomProduit}} <br> Référence: {{numProduit}}</a>
             </strong>
+            
         </p>
 
         <div class="d-flex justify-content-between mt-auto">
