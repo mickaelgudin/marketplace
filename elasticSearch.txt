@@ -82,6 +82,17 @@ POST 127.0.0.1:9200/produits/_doc
 }
 
 
+// exec this command to be able to sort by name
+PUT 127.0.0.1:9200/produits/_mapping/
+{
+    "properties": {
+        "nom": {
+            "type": "text",
+            "fielddata": true
+        }
+    }
+}
+
 //get all elements
 GET 127.0.0.1:9200/produits/_doc/_search
 

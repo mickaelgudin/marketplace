@@ -29,76 +29,46 @@ function getQueryForAllProducts() {
 }
 
 //query to display products with price filter from user input
-function getQueryForPriceFilter() {
+function getQueryForPriceFilterAndPreviousName() {
     let valueMinPriceFilter = document.getElementById("valueMinPriceFilter");
     let valueMaxPriceFilter = document.getElementById("valueMaxPriceFilter");
+    let valueFromSortedOption = document.getElementById("sorted-select").value;
+    let previousSearchName = document.querySelector('#searchContent').value;
+    let fieldToOrder = new Object();
+    fieldToOrder[valueFromSortedOption.split('-')[0]] = {"order" : valueFromSortedOption.split('-')[1]};
+    let matchName = {"match_all": {}};
+    if(previousSearchName != "") {
+        matchName = {"match": { "nom": String(previousSearchName)} };
+    }
 
-    return JSON.stringify(
-        {
-            "query": {
-                "bool": {
-                    "must": [
-                        {
-                            "range" : {
-                                "prix" : {
-                                    "lte" : Number(valueMaxPriceFilter.value),
-                                    "gte" : Number(valueMinPriceFilter.value)
-                                }
-                            }
-                        },
-                        {
-                            "range": {
-                                "quantite_stock": {
-                                    "gt" : Number(0)
-                                }
-                            }
-                        }
-                    ]
-                }
-            }
-        }
-    );
-}
-
-//query to display products with price and name filters from user input
-function getQueryForNameAndPriceFilter() {
-    let valueMinPriceFilter = document.getElementById("valueMinPriceFilter");
-    let valueMaxPriceFilter = document.getElementById("valueMaxPriceFilter");
-    let containerProduct = document.querySelector('#container-product');
-    let searchContent = document.querySelector('#searchContent').value;
-    document.querySelector('#searchContent').value='';
-    containerProduct.innerHTML='';
-
-    return JSON.stringify(
-    {   "query": {
+    let query = {
+        "query": {
             "bool": {
                 "must": [
-                {
-                    "match": {
-                        "nom": String(searchContent)
-                    }
-                },
-                {
-                    "range": {
-                        "prix" : {
-                            "lte" : Number(valueMaxPriceFilter.value),
-                            "gte" : Number(valueMinPriceFilter.value)
+                    matchName,
+                    {
+                        "range" : {
+                            "prix" : {
+                                "lte" : Number(valueMaxPriceFilter.value),
+                                "gte" : Number(valueMinPriceFilter.value)
+                            }
+                        }
+                    },
+                    {
+                        "range": {
+                            "quantite_stock": {
+                                "gt" : Number(0)
+                            }
                         }
                     }
-                },
-                {
-                    "range": {
-                        "quantite_stock": {
-                            "gt" : Number(0)
-                        }
-                    }
-                },
                 ]
             }
-        }
-    })
+        },
+        "sort" : [fieldToOrder]
+    };
+    
+    return JSON.stringify(query);
 }
-
 
 //check the quantite for a given product to prevent quantities higher than the maximum available
 function checkQuantite(event) {
@@ -108,9 +78,13 @@ function checkQuantite(event) {
 }
 
 // elastic search query's result when page loaded
-fetch(urlElasticSearch, getConfigForFetch(getQueryForAllProducts() ))
-.then(response=>response.json())
-.then(data=>showProductsFromResults(data.hits.hits));
+function retriveInitialData(){
+    fetch(urlElasticSearch, getConfigForFetch(getQueryForAllProducts() ))
+    .then(response=>response.json())
+    .then(data=>showProductsFromResults(data.hits.hits));
+}
+//when we first load the price book
+retriveInitialData();
 
 //SHOW PRODUCTS FROM ELASTIC SEARCH QUERY SEARCH
 function showProductsFromResults(resp){
@@ -131,25 +105,18 @@ function showProductsFromResults(resp){
     });
 }
 
+function sendSearchElasticByPriceAndPreviousName() {
+    document.querySelector('#container-product').innerHTML='';
+    fetch(urlElasticSearch, getConfigForFetch(getQueryForPriceFilterAndPreviousName() ) )
+    .then(response=>response.json())
+    .then(data=>showProductsFromResults(data.hits.hits));
+}
 
-
-var buttonSearch = document.querySelector('.searchButton');
-//search products according to the name and the price filter using elastic search with HTTP request 
-buttonSearch.addEventListener("click", 
-    function sendSearchElasticByNameAndPrice() {
-        
-        fetch(urlElasticSearch, getConfigForFetch(getQueryForNameAndPriceFilter() ) )
-        .then(response=>response.json())
-        .then(data=>showProductsFromResults(data.hits.hits));
-    }, 
-false);
-
-//return products according to the price filter using elastic search with HTTP request
-document.querySelector('#btnPriceFilter').addEventListener("click", 
-    function sendSearchElasticByName() {
-        document.querySelector('#container-product').innerHTML='';
-        fetch(urlElasticSearch, getConfigForFetch(getQueryForPriceFilter() ) )
-        .then(response=>response.json())
-        .then(data=>showProductsFromResults(data.hits.hits));
-    },
-false);
+function resetFilters(){
+    document.querySelector('#container-product').innerHTML='';
+    retriveInitialData();
+    document.getElementById("valueMinPriceFilter").value='1';
+    document.getElementById("valueMaxPriceFilter").value='5000';
+    document.getElementById("sorted-select").value='nom-asc';
+    document.querySelector('#searchContent').value='';
+}
