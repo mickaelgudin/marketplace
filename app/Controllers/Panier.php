@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-use function PHPUnit\Framework\isNull;
-
 class Panier extends BaseController
 {
 
@@ -49,12 +47,11 @@ class Panier extends BaseController
 	/**
 	 * Supprimer un article lorsque la quantité atteint 0
 	 */
-	public function deleteArticleQuantity()
+	public function deleteArticleQuantity($quantity_id)
 	{
 		$user = $this->getCurrentUser();
 		$panier = $this->getCurrentPanier($user);
 
-		$quantity_id = $_POST['quantity_id'];
 		for ($i = 0; $i <= sizeof($panier) + 1; $i++) {
 			
 			if ($i == $quantity_id) {
@@ -92,31 +89,32 @@ class Panier extends BaseController
 	 * Modifier la quantité avec les boutons plus et moins 
 	 */
 
-	public function changeQuantity()
+	public function changeQuantity($quantity_id)
 	{
 		$user = $this->getCurrentUser();
 		$panier = $this->getCurrentPanier($user);
 
-		$quantity_id = $_POST['quantity_id'];
-
-		if (isset($_POST['plus'])) {
+		if (isset($_POST['moins'])) {
+			//BOUTON -
+			for ($i = 0; $i < sizeof($panier["data"]); $i++) {
+				if ($panier["data"][$i] == $panier["data"][$quantity_id]) {
+					//s'il reste qu'une quantite et qu on appui sur moins on supprime l'article du panier
+					if ($panier["data"][$i]["quantite"] == 1) {
+						$this->deleteArticleQuantity($quantity_id);
+						return view('panier');
+					}
+					$panier["data"][$quantity_id]["quantite"] =	$panier["data"][$quantity_id]["quantite"] - 1;
+				}
+			} 
+		} else {
+			//BOUTON +
 			for ($i = 0; $i < sizeof($panier["data"]); $i++) {
 				if ($panier["data"][$i] == $panier["data"][$quantity_id]) {
 					$panier["data"][$quantity_id]["quantite"] =	$panier["data"][$quantity_id]["quantite"] + 1;
 				}
 			}
-		} else if (isset($_POST['moins'])) {
-			for ($i = 0; $i < sizeof($panier["data"]); $i++) {
-				if ($panier["data"][$i] == $panier["data"][$quantity_id]) {
-					//s'il reste qu'une quantite et qu on appui sur moins on supprime l'article du panier
-					if ($panier["data"][$i]["quantite"] == 1) {
-						$this->deleteArticleQuantity();
-						return view('panier');
-					}
-					$panier["data"][$quantity_id]["quantite"] =	$panier["data"][$quantity_id]["quantite"] - 1;
-				}
-			}
 		}
+
 
 		$this->cache->save($user, $panier, 300);
 		return view('panier', $panier);

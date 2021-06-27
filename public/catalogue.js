@@ -101,6 +101,7 @@ function showProductsFromResults(resp){
         let newProductItem = productItem.innerHTML.replaceAll("{{prixProduit}}", element._source.prix);
         newProductItem = newProductItem.replaceAll('{{numProduit}}', element._source.num);
         newProductItem = newProductItem.replaceAll('{{nomProduit}}', element._source.nom);
+        newProductItem = newProductItem.replaceAll('{{quantiteProduit}}', element._source.quantite_stock);
         containerProduct.innerHTML = containerProduct.innerHTML + newProductItem;
     });
 }

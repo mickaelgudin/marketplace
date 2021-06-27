@@ -79,7 +79,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-sm">
-                            <input class="form-control" onkeyup="checkQuantite(this)" type="number" name="quantite" min="1" max="5" value="1" />
+                            <input class="form-control" onkeyup="checkQuantite(this)" type="number" name="quantite" min="1" max={{quantiteProduit}} value="1" />
                             
                         </div>
                         <div class="col-sm">
@@ -90,6 +90,7 @@
                         </div>
                     </div>
                 </div>
+                <input hidden name="quantite_stock" value="{{quantiteProduit}}"/>
                 <input hidden name="num" value="{{numProduit}}"/>
                 <input hidden name="nom" value="{{nomProduit}}"/>
                 <input hidden name="prix" value="{{prixProduit}}"/>

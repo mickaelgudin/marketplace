@@ -21,6 +21,8 @@
         </thead>
         <tbody>
             <?php
+
+            
             if (!empty($data)) {
                 $i = 0;
                 foreach ($data as $article) {
@@ -33,7 +35,7 @@
                                 <div class="media-body">
                                     <h4 class="media-heading">
                                         <a href="#">
-                                            <?php echo array_values($article)[1]; ?>
+                                            <?php echo (array_values($article)[1] . ' ' . array_values($article)[0]); ?>
                                         </a>
                                     </h4>
                                 </div>
@@ -41,13 +43,13 @@
                         </td>
 
                         <td class="col-sm-1 col-md-1 text-center"><strong>
-
-                                <form action="change-quantity" method="post">
-                                    <input type="submit" name="plus" value="+">
-                                    <input type="submit" name="moins" value="-">
-                                    <input type="hidden" class="btn btn-danger" name="quantity_id" value="<?php echo $i; ?>" />
-                                </form>
                                 <?php echo array_values($article)[3];?>
+                                <form id="<?=array_values($article)[0]?>" action="change-quantity<?=$i?>" method="post">
+                                    <!-- une fonction javascript appel elasticsearch pour verifier le stock quand on appuie sur + -->
+                                    <input type="submit" onclick="addProduit()" name="plus" class="buttonAdd" value="+" id="<?=array_values($article)[0] . '-' . array_values($article)[3]?>">
+                                    <input type="submit" name="moins" value="-">
+                                </form>
+                               
                             </strong></td>
                         </td>
                         <td class="col-sm-1 col-md-1 text-center"><strong>
@@ -122,3 +124,60 @@
         </tbody>
     </table>
 </div>
+
+</body>
+
+<script>
+function getConfigForFetch(query) {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+
+    return {
+        method:"POST",
+        headers: headers,
+        mode : 'cors',
+        body:query      
+    };
+}
+
+//check quantite quand appuie sur + au niveau d'elastic search
+function addProduit() {
+    event.stopPropagation();
+    event.preventDefault();
+    let elements = (event.target.id).split('-');
+    let refProduit = elements[0];
+    let quantiteActuel = Number(elements[1]);
+
+    console.log(event);
+    //on teste si l'ajout d'un produit du type refProduit correspond a la quantite disponible dans le catalogue
+    let query = JSON.stringify({
+        "query": {
+            "bool": {
+                "must": [
+                    {"match": { "num": refProduit} },
+                    {
+                        "range": {
+                            "quantite_stock": {
+                                "gte" : quantiteActuel+1
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    });
+
+    var originalEvent = event;
+    fetch("http://127.0.0.1:9200/produits/_doc/_search", getConfigForFetch(query) ).then(response=>response.json()).then(data => {
+        console.log(data.hits.hits);
+        console.log(data.hits.hits.length > 0);
+        if(data.hits.hits.length > 0) {
+            originalEvent.target.removeEventListener("onclick", addProduit, true);
+            document.getElementById(refProduit).submit();
+        } else {
+            window.location = "panier?error=la quantite demande est superieur au stock";
+        }
+    })
+}
+
+</script>

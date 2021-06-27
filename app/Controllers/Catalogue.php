@@ -34,14 +34,9 @@ class Catalogue extends BaseController
 
 		$user = str_replace('@', "key", $user_start);
 
-		if ($this->cache->get($user) != null) {
-			$panier = $this->cache->get($user);
-		} else {
-			$panier = array(
-				"data" => array()
-			);
-		}
-
+		//si l'utilisateur déjà un panier alors on le prend
+		$panier = ($this->cache->get($user) != null) ?  $this->cache->get($user): array("data" => array() );
+		
 		$article = array(
 			"num" => $_POST['num'],
 			"nom" => $_POST['nom'],
@@ -59,11 +54,19 @@ class Catalogue extends BaseController
 		if (in_array($article["num"], $num_panier)) {
 			for ($i = 0; $i < sizeof($panier["data"]); $i++) {
 				if ($panier["data"][$i]["num"] == $article["num"]) {
+					//la quantite de l'article deja présent n'est pas mise à jour si le stock n'est pas suffisant
+					if($_POST["quantite_stock"] < $panier["data"][$i]["quantite"] + $quantite) {
+						break;
+					}
+
 					$panier["data"][$i]["quantite"] =	$panier["data"][$i]["quantite"] + $quantite;
 				}
 			}
 		} else {
-			array_push($panier['data'], $article);
+			//l'article est ajouté la premiere fois seulement si la quantite selectionne est suffisante
+			if($_POST["quantite_stock"] >= $quantite ) {
+				array_push($panier['data'], $article);
+			}
 		}
 
 		$this->cache->save($user, $panier, 300);
