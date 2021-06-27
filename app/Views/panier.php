@@ -1,7 +1,5 @@
 <?php include "menu.php"; ?>
-<?php $totalPrix=0 ?>
-
-
+<?php $totalPrix=0; ?>
 
 <div class="col-sm-12 col-md-10 col-md-offset-1">
     <?php if(isset($_GET['error'])) : ?>
@@ -14,10 +12,10 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th class="text-center">Price</th>
-                <th class="text-center">Total</th>
+                <th>Produit</th>
+                <th>Quantité</th>
+                <th class="text-center">Prix unitaire</th>
+                <th class="text-center">Prix total</th>
                 <th> </th>
             </tr>
         </thead>
@@ -49,15 +47,11 @@
                                     <input type="submit" name="moins" value="-">
                                     <input type="hidden" class="btn btn-danger" name="quantity_id" value="<?php echo $i; ?>" />
                                 </form>
-                                <?php
-                                echo array_values($article)[3];
-                                ?>
+                                <?php echo array_values($article)[3];?>
                             </strong></td>
                         </td>
                         <td class="col-sm-1 col-md-1 text-center"><strong>
-                                <?php
-                                echo array_values($article)[2];
-                                ?>€</strong></td>
+                                <?php echo array_values($article)[2];?>€</strong></td>
                         <td class="col-sm-1 col-md-1 text-center"><strong>
                                 </strong></td>
                         <td class="col-sm-1 col-md-1">
@@ -110,7 +104,7 @@
                 <td> </td>
                 <td>
                     <button type="button" class="btn btn-default">
-                        <span class="fa fa-shopping-cart"></span> <a href="catalogue">Continue Shopping</a>
+                        <span class="fa fa-shopping-cart"></span> <a href="catalogue">Continuer mes courses</a>
                     </button>
                 </td>
                 <td>

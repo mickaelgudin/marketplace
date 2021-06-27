@@ -14,18 +14,14 @@ class Panier extends BaseController
 	 */
 	public function index()
 	{
-		$user_start = $this->cache->get('email');
-		$user = str_replace('@', "key", $user_start);
-		$data = $this->cache->get($user);
-
-		if (is_null($data)) {
-			$data = array(
-				"data" => array()
-			);
-			return  view("panier", $data);
-		} else {
-			return view('panier', $data);
+		$user = $this->getCurrentUser();
+		if(empty($user)){
+			return view('home');
 		}
+		
+		$panier = $this->getCurrentPanier($user);
+
+		return view('panier', $panier);
 	}
 
 	/**
@@ -33,33 +29,20 @@ class Panier extends BaseController
 	 */
 	public function deleteArticle()
 	{
-
-		$user_start = $this->cache->get('email');
-		$user = str_replace('@', "key", $user_start);
-
-
-		$data = $this->cache->get($user);
+		$user = $this->getCurrentUser();
+		$panier = $this->getCurrentPanier($user);
 
 		$rem = $_POST['delete'];
-		for ($i = 0; $i <= sizeof($data) + 1; $i++) {
-			if (is_null($data)) {
-				$data = array(
-					"data" => array()
-				);
-			}
+		for ($i = 0; $i <= sizeof($panier) + 1; $i++) {
 			if ($i == $rem) {
-				$test = "good";
-				unset($data['data'][$i]);
-				$data['data'] = array_values($data['data']);
-				$this->cache->save($user, $data);
+				unset($panier['data'][$i]);
+				$panier['data'] = array_values($panier['data']);
+				$this->cache->save($user, $panier);
 				break;
-			} else {
-				$test = "rate";
 			}
 		}
 
-
-		$this->index();
+		return view("panier", $panier);
 	}
 
 
@@ -68,33 +51,42 @@ class Panier extends BaseController
 	 */
 	public function deleteArticleQuantity()
 	{
-
-		$user_start = $this->cache->get('email');
-		$user = str_replace('@', "key", $user_start);
-
-
-		$data = $this->cache->get($user);
+		$user = $this->getCurrentUser();
+		$panier = $this->getCurrentPanier($user);
 
 		$quantity_id = $_POST['quantity_id'];
-		for ($i = 0; $i <= sizeof($data) + 1; $i++) {
-			if (is_null($data)) {
-				$data = array(
-					"data" => array()
-				);
-			}
+		for ($i = 0; $i <= sizeof($panier) + 1; $i++) {
+			
 			if ($i == $quantity_id) {
-				$test = "good";
-				unset($data['data'][$i]);
-				$data['data'] = array_values($data['data']);
-				$this->cache->save($user, $data);
-			} else {
-				$test = "rate";
+				unset($panier['data'][$i]);
+				$panier['data'] = array_values($panier['data']);
+				$this->cache->save($user, $panier);
 			}
 		}
-
-
-		$this->index();
 	}
+
+	/**
+	 * retourne l'email de l'user actuellement connecté
+	 */
+	public function getCurrentUser() {
+		$user_start = $this->cache->get('email');
+		$user = str_replace('@', "key", $user_start);
+		return $user;
+	}
+
+	/**
+	 * retourne le panier actuel de l'utilsateur connecte
+	 */
+	public function getCurrentPanier($user) {
+		if ($this->cache->get($user) != null) {
+			$panier = $this->cache->get($user);
+		} else {
+			$panier = array("data" => array());
+		}
+
+		return $panier;
+	}
+
 
 	/**
 	 * Modifier la quantité avec les boutons plus et moins 
@@ -102,32 +94,21 @@ class Panier extends BaseController
 
 	public function changeQuantity()
 	{
+		$user = $this->getCurrentUser();
+		$panier = $this->getCurrentPanier($user);
 
-
-		$user_start = $this->cache->get('email');
-		$user = str_replace('@', "key", $user_start);
-
-		if ($this->cache->get($user) != null) {
-			$panier = $this->cache->get($user);
-		} else {
-			$panier = array(
-				"data" => array()
-			);
-		}
 		$quantity_id = $_POST['quantity_id'];
 
 		if (isset($_POST['plus'])) {
 			for ($i = 0; $i < sizeof($panier["data"]); $i++) {
 				if ($panier["data"][$i] == $panier["data"][$quantity_id]) {
-
 					$panier["data"][$quantity_id]["quantite"] =	$panier["data"][$quantity_id]["quantite"] + 1;
 				}
 			}
-		}
-
-		if (isset($_POST['moins'])) {
+		} else if (isset($_POST['moins'])) {
 			for ($i = 0; $i < sizeof($panier["data"]); $i++) {
 				if ($panier["data"][$i] == $panier["data"][$quantity_id]) {
+					//s'il reste qu'une quantite et qu on appui sur moins on supprime l'article du panier
 					if ($panier["data"][$i]["quantite"] == 1) {
 						$this->deleteArticleQuantity();
 						return view('panier');
@@ -137,10 +118,8 @@ class Panier extends BaseController
 			}
 		}
 
-
-
 		$this->cache->save($user, $panier, 300);
-		return view('panier');
+		return view('panier', $panier);
 	}
 
 	/**
@@ -148,9 +127,8 @@ class Panier extends BaseController
 	 */
 	public function checkout()
 	{
-		$user_start = $this->cache->get('email');
-		$user = str_replace('@', "key", $user_start);
-		$panier = $this->cache->get($user);
+		$user = $this->getCurrentUser();
+		$panier = $this->getCurrentPanier($user);
 		$lastCommande = $this->mongo_db->select(array("id"))->order_by(array('id' => 'DESC'))->limit(1)->get("commandes");
 
 		//si aucune commande n'avait ete fait le premiere id est 1
@@ -160,7 +138,7 @@ class Panier extends BaseController
 		}
 
 		//insertion de la commande
-		$commandeInserted = $this->insertCommande($nextIdCommande, $user_start);
+		$commandeInserted = $this->insertCommande($nextIdCommande, $this->cache->get('email'));
 
 		//insere des lignes de commandes(a partir des articles du panier)
 		if (!empty($commandeInserted)) {

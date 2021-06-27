@@ -27,9 +27,7 @@ class Catalogue extends BaseController
 	 */
 	public function addPanier()
 	{
-		$this->cache = \Config\Services::cache();
 		$user_start = $this->cache->get('email');
-
 		if(empty($user_start)) {
 			return view('home');
 		}

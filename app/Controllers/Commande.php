@@ -11,18 +11,16 @@ class Commande extends BaseController
 			$results = $this->mongo_db->where(array('email' => $user_email) )->get('utilisateurs');
 			$idUser = $results[0]['id'];
 			$dataArray = array("data"=>$this->getCommandes($idUser));
-			echo view('commande',$dataArray);
+			return view('commande',$dataArray);
 		}
 		else{
-			$dataArray = array("data"=>array());
-			echo view('commande',$dataArray);
+			return view('home');
 		}
 	}
 
 	public function getCommandes($idUser)
 	{
-		$data = $this->mongo_db->where(array('idUtilisateur' =>(int)$idUser) )
-								  ->get('commandes');
+		$data = $this->mongo_db->where(array('idUtilisateur' =>(int)$idUser) )->get('commandes');
 								  
 		$dataArray = array();
 		foreach($data as $j){
