@@ -1,6 +1,6 @@
 # Marketplace - avec plusieurs base de données
 
-![](/screenshots/demo.mp4)
+[![Watch the video](https://user-images.githubusercontent.com/39730173/123625648-4003cf80-d810-11eb-9075-31b89945c125.mp4)](https://user-images.githubusercontent.com/39730173/123625648-4003cf80-d810-11eb-9075-31b89945c125.mp4)
 
 ## Le technos et leur configuration dans le projet
 - Redis : en utilisant les fonctionnalités de cache du Framework CodeIgniter (au niveau de app/Config/Cache.php Predis est configurer comme handler de cache)
