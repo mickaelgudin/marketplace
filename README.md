@@ -17,6 +17,12 @@
 - Dans la console redis-cli taper `CONFIG SET requirepass password`
 - Dans la consle redis-cli taper `AUTH password`
 - Dans un navigateur(chrome de préférence pour le js implétementé) aller sur la page d'accueil : http://localhost/marketplace/public/
+- Vous pouvez vous connectez avec 
+```
+Email : test@test.fr
+mot de passe : test 
+```
+- Vous pouvez créer un compte et vous connectez avec
 
 ## L'utilisation des base de données
 - Les appels http avec javascript permettent d'afficher les données d'elastic search sans rafraichir la page, de plus plusieurs rêquetes peuvent être effectué(recherche d'un nom, filtre sur un intervalle de prix, trie par nom et prix croissant ou décroissant)
