@@ -1,56 +1,42 @@
-# CodeIgniter 4 Framework
+# Marketplace - avec plusieurs base de données
 
-## What is CodeIgniter?
+## Le technos et leur configuration dans le projet
+- Redis : en utilisant les fonctionnalités de cache du Framework CodeIgniter (au niveau de app/Config/Cache.php Predis est configurer comme handler de cache)
+- Elasticsearch : en faisant des appels api via javascript (pour les Views panier.php et catalogue.php)
+- Mongodb : avec une instance local, en utilisant le Controller Mongodb.php (en se basant sur le code sur repo : https://github.com/intekhabrizvi/codeigniter-mongodb-library)
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](http://codeigniter.com).
+## Lancement du projet
+- git pull du projet (si le zip est telecharger merci de bien nommer le dossier marketplace)
+- le **script launch-databases.bat peut être execute** pour lancer toutes les bases de données en même temps (*à condition de modifier les chemins dans le fichier*)
+- le driver mongodb doit être installé au niveau de wamp
+- le projet doit être dans le répoire www de wamp
+- Exécuter la commande suivant à la racine du projet : `composer install`
+- Lancer les bases de données (soit manuellement soit en utilisant le script launch-database.bat)
+- Importer les données dans mongodb (**les commandes mongodb sont dans le fichier ajout_des_collections.txt**)
+- Importer les données dans elasticsearch via postman (**les requetes http sont dans le fichier elasticSearch.txt**)
+- Dans la console redis-cli taper `CONFIG SET requirepass password`
+- Dans la consle redis-cli taper `AUTH password`
+- Dans un navigateur(chrome de préférence pour le js implétementé) aller sur la page d'accueil : http://localhost/marketplace/public/
+- Vous pouvez vous connectez avec 
+```
+Email : test@test.fr
+mot de passe : test 
+```
+- Vous pouvez créer un compte et vous connectez avec
 
-This repository holds the distributable version of the framework,
-including the user guide. It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+## L'utilisation des base de données
+- Les appels http avec javascript permettent d'afficher les données d'elastic search sans rafraichir la page, de plus plusieurs rêquetes peuvent être effectué(recherche d'un nom, filtre sur un intervalle de prix, trie par nom et prix croissant ou décroissant)
+![Alt text](/screenshots/catalogue.png?raw=true)
+- Elastic search permet de vérifier la quantité désiré est suffisante par le client quand il clique sur + pour un produit dans le panier (un appel http est fait en js si tout se passe bien php ajoute la quantité désirée, sinon une erreur est affiché à l'utilisateur)
+![Alt text](/screenshots/quantite_insuffisante.png?raw=true)
+- Lorsqu'on clique sur le bouton Commander dans le panier, on traduit le panier présent dans Redis en Commande et Ligne de commande dans MongoDb en faisant une gestion des cas d'erreurs
+- Redis est central il permet d'accèder à l'utilisateur connecté (pour l'associer à une commande), ou pour l'afficher dans le menu
 
-More information about the plans for version 4 can be found in [the announcement](http://forum.codeigniter.com/thread-62615.html) on the forums.
+## Gestion d'erreur
+- Le maximum de cas d'erreur est géré au niveau php(une nouvelle commande n'a pas inséré dans mongodb, utilisateur pas connecté essayant d'accèder au(x): catalogue, commandes ou panier)
+- Au niveau javascript pour le catalogue on fait en sorte que l'utilisateur ne puisse pas entré une quantité supérieur au stock (via des vérifications d'entrées de clavier...)
 
-The user guide corresponding to this version of the framework can be found
-[here](https://codeigniter4.github.io/userguide/).
+## Le modèle de données
+![Alt text](/screenshots/data_model.jpeg?raw=true)
 
 
-## Important Change with index.php
-
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
-
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
-
-**Please** read the user guide for a better explanation of how CI4 works!
-
-## Repository Management
-
-We use Github issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
-
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
-
-## Contributing
-
-We welcome contributions from the community.
-
-Please read the [*Contributing to CodeIgniter*](https://github.com/codeigniter4/CodeIgniter4/blob/develop/CONTRIBUTING.md) section in the development repository.
-
-## Server Requirements
-
-PHP version 7.3 or higher is required, with the following extensions installed:
-
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
-
-Additionally, make sure that the following extensions are enabled in your PHP:
-
-- json (enabled by default - don't turn it off)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php)
-- xml (enabled by default - don't turn it off)

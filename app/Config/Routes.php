@@ -35,13 +35,22 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Home::index');
 //login routes
 $routes->get('/login', 'Login::index');
+$routes->get('/log', 'Login::check');
 $routes->post('/log', 'Login::check');
+$routes->get('/logout', 'Login::logout');
 $routes->post('/create-account', 'Login::createAccount');
 
 //autres routes
 $routes->get('/catalogue', 'Catalogue::index');
+$routes->post('/add-panier', 'Catalogue::addPanier');
+
 $routes->get('/panier', 'Panier::index');
+$routes->post('/delete-article', 'Panier::deleteArticle');
+$routes->post('/change-quantity(:num)', 'Panier::changeQuantity/$1');
+
 $routes->get('/commande', 'Commande::index');
+$routes->get('/commandeDetail(:num)', 'CommandeDetail::index/$1');
+$routes->get('/checkout', 'Panier::checkout');
 
 /*
  * --------------------------------------------------------------------
