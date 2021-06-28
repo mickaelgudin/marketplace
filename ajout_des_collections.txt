@@ -48,8 +48,11 @@ db.createCollection( "commandes", {
 } )
 
 
-db.commandes.insertMany([{ 'id': NumberInt(1), prixTotal: NumberInt(700) , date: ISODate("2014-01-01T08:15:39.736Z"), idUtilisateur: NumberInt(1) }])
-db.commandes.insertMany([{ 'id': NumberInt(2), prixTotal: NumberInt(1200) , date: ISODate("2018-05-01T08:17:58.737Z"), idUtilisateur: NumberInt(1) }])
+db.commandes.insertMany([
+   { 'id': NumberInt(1), prixTotal: NumberInt(700) , date: ISODate("2014-01-01T08:15:39.736Z"), idUtilisateur: NumberInt(1) },
+   { 'id': NumberInt(2), prixTotal: NumberInt(1200) , date: ISODate("2018-05-01T08:17:58.737Z"), idUtilisateur: NumberInt(1) }
+])
+
 
 
 db.createCollection( "ligneDeCommande", {

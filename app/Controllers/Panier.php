@@ -60,6 +60,8 @@ class Panier extends BaseController
 				$this->cache->save($user, $panier);
 			}
 		}
+
+		return $panier;
 	}
 
 	/**
@@ -100,8 +102,8 @@ class Panier extends BaseController
 				if ($panier["data"][$i] == $panier["data"][$quantity_id]) {
 					//s'il reste qu'une quantite et qu on appui sur moins on supprime l'article du panier
 					if ($panier["data"][$i]["quantite"] == 1) {
-						$this->deleteArticleQuantity($quantity_id);
-						return view('panier');
+						$panier = $this->deleteArticleQuantity($quantity_id);
+						return view('panier', $panier);
 					}
 					$panier["data"][$quantity_id]["quantite"] =	$panier["data"][$quantity_id]["quantite"] - 1;
 				}

@@ -44,13 +44,19 @@ class Login extends BaseController
 
 		$results = $this->mongo_db->where(array('email' => $_POST['email']) )->get('utilisateurs');
 
+		$lastUser = $this->mongo_db->select(array("id"))->order_by(array('id' => 'DESC'))->limit(1)->get("utilisateurs");
+		$nextUserId = 1;
+		if (!empty($lastUser)) {
+			$nextUserId = ($lastUser[0]['id']) + 1;
+		}
+
 		//si un utilisateur a déjà cette email on retourne une erreur
 		if(!empty($results)) {
 			return redirect()->to('/public/login?error=le compte existe déjà');
 		}
 
 		//sinon on crée un nouvel utilisateurs dans mongodb
-		$this->mongo_db->insert('utilisateurs', array('email' => $_POST['email'], 'password' => $_POST['password']) );
+		$this->mongo_db->insert('utilisateurs', array('id' => $nextUserId, 'email' => $_POST['email'], 'password' => $_POST['password']) );
 
 		return redirect()->to('/public/login?success=le compte a été crée');
 	}
