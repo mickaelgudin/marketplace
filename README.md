@@ -26,7 +26,7 @@ mot de passe : test
 ```
 - Vous pouvez créer un compte et vous connectez avec
 
-## L'utilisation des base de données
+## L'utilisation des bases de données
 - Les appels http avec javascript permettent d'afficher les données d'elastic search sans rafraichir la page, de plus plusieurs rêquetes peuvent être effectué(recherche d'un nom, filtre sur un intervalle de prix, trie par nom et prix croissant ou décroissant)
 ![Alt text](/screenshots/catalogue.png?raw=true)
 - Elastic search permet de vérifier la quantité désiré est suffisante par le client quand il clique sur + pour un produit dans le panier (un appel http est fait en js si tout se passe bien php ajoute la quantité désirée, sinon une erreur est affiché à l'utilisateur)
