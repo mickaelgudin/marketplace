@@ -27,7 +27,7 @@ class Login extends BaseController
 		if(!empty($results)) {
 			//on crée une variable dans redis en utilisant les méthodes de cache de CodeIgniter
 			$this->cache->save('email', $_POST['email'], 7200); 
-			return redirect()->to('/public/login?success=vous êtes connecté');
+			return redirect()->to('/public/catalogue');
 		} 
 
 		return redirect()->to('/public/login?error=vérifier vos identiants');

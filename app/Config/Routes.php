@@ -51,6 +51,8 @@ $routes->post('/change-quantity(:num)', 'Panier::changeQuantity/$1');
 $routes->get('/commande', 'Commande::index');
 $routes->get('/commandeDetail(:num)', 'CommandeDetail::index/$1');
 $routes->get('/checkout', 'Panier::checkout');
+$routes->get('/my-account', 'MyAccount::index');
+$routes->post('/update-account', 'MyAccount::updateAccount');
 
 /*
  * --------------------------------------------------------------------

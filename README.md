@@ -9,17 +9,24 @@
 
 ## Lancement du projet
 - git pull du projet (si le zip est téléchargé merci de bien nommer le dossier marketplace)
-- le **script launch-databases.bat peut être executé** pour lancer toutes les bases de données en même temps (*à condition de modifier les chemins dans le fichier*)
+- Dans le répétoire elastic search de votre machine, allez dans config/elasticsearch.yml et ajouter les config suivantes : 
+```
+http.cors.enabled : true
+http.cors.allow-origin: "*"
+http.cors.allow-methods: OPTIONS, HEAD, GET, POST, PUT, DELETE
+http.cors.allow-headers: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers
+http.cors.allow-credentials: true
+```
 - le driver mongodb doit être installé au niveau de wamp
 - le projet doit être dans le répertoire www de wamp
 - Exécuter la commande suivante à la racine du projet : `composer install`
-- Lancer les bases de données (soit manuellement soit en utilisant le script launch-database.bat)
-- Importer les données dans mongodb (**les commandes mongodb sont dans le fichier ajout_des_collections.txt**)
-- Importer les données dans elasticsearch via postman (**les requetes http sont dans le fichier elasticSearch.txt**)
+- Lancer les bases de données (soit manuellement soit en utilisant le script launch-database.bat *à condition de modifier les chemins dans le fichier*)
+- Exécuter les requêtes pour mongodb (**les commandes mongodb sont dans le fichier ajout_des_collections.txt**)
+- Exécuter les requêtes pour elasticsearch via postman (**les requetes http sont dans le fichier elasticSearch.txt**)
 - Dans la console redis-cli taper `CONFIG SET requirepass password`
 - Dans la consle redis-cli taper `AUTH password`
 - Dans un navigateur(chrome de préférence pour le js implétementé) aller sur la page d'accueil : http://localhost/marketplace/public/
-- Vous pouvez vous connecter avec 
+- Vous pouvez vous connecter avec l'utilisateur par défault(créer dans mongodb)
 ```
 Email : test@test.fr
 mot de passe : test 

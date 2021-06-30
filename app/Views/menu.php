@@ -23,7 +23,7 @@
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="<?=!empty($connectedUsername) ? 'home' : 'login' ?>">
+                        <a class="nav-link" href="<?=!empty($connectedUsername) ? 'myaccount' : 'login' ?>">
                             <i class="fas fa-user"></i> 
                             <?= !empty($connectedUsername ) ? $connectedUsername : 'Se connecter/ S\'inscrire' ?> 
                         </a>

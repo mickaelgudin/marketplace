@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+use \CodeIgniter\HTTP\Response;
 
 class Panier extends BaseController
 {
@@ -129,6 +130,7 @@ class Panier extends BaseController
 	{
 		$user = $this->getCurrentUser();
 		$panier = $this->getCurrentPanier($user);
+
 		$lastCommande = $this->mongo_db->select(array("id"))->order_by(array('id' => 'DESC'))->limit(1)->get("commandes");
 
 		//si aucune commande n'avait ete fait le premiere id est 1
@@ -145,6 +147,8 @@ class Panier extends BaseController
 			$hasBeenInserted = $this->insertLignesDeCommande($panier["data"], $nextIdCommande);
 			if ($hasBeenInserted == false) {
 				return redirect()->to('/public/panier?error=les lignes de commande n\'ont pas ete cree');
+			} else {
+				//mise a jour des quantités dans elastic search
 			}
 
 			//on vide le panier et on confirme la creation de la commande a l'utilisateur
@@ -153,6 +157,7 @@ class Panier extends BaseController
 		} else {
 			return redirect()->to('/public/panier?error=la commande a echoue');
 		}
+		
 	}
 
 	/**

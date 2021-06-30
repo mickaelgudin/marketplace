@@ -1,85 +1,28 @@
-POST 127.0.0.1:9200/produits/_doc
+(pour cette requete il faut ajouter une ligne vide dans postman après la dernière ligne)
+POST 127.0.0.1:9200/produits/_bulk
 
-{
-    "num":"L1",
-    "nom":"lunette",
-    "quantite_stock":2,
-    "prix":200
-
-}
-{
-    "num":"L2",
-    "nom":"lunette",
-    "quantite_stock":4,
-    "prix":300
-
-}
-{
-    "num":"L3",
-    "nom":"lunette",
-    "quantite_stock":0,
-    "prix":400
-
-}
-{
-    "num":"B1",
-    "nom":"bague",
-    "quantite_stock":3,
-    "prix":1200
-
-}
-
-
-
-
-{
-    "num":"B2",
-    "nom":"bague",
-    "quantite_stock":2,
-    "prix":1300
-}
-{
-    "num":"C1",
-    "nom":"collier",
-    "quantite_stock": 8,
-    "prix": 250
-
-}
-{
-    "num":"C2",
-    "nom":"collier",
-    "quantite_stock": 5,
-    "prix": 450
-
-}
-{
-    "num":"C3",
-    "nom":"collier",
-    "quantite_stock": 3,
-    "prix": 1100
-
-}
-{
-    "num":"M1",
-    "nom":"montre",
-    "quantite_stock": 12,
-    "prix": 85
-
-}
-{
-    "num":"M2",
-    "nom":"montre",
-    "quantite_stock": 6,
-    "prix": 99
-
-}
-{
-    "num":"M3",
-    "nom":"montre",
-    "quantite_stock": 8,
-    "prix": 150
-
-}
+{ "index" : {}}
+{ "num":"L1", "nom":"lunette", "quantite_stock":2, "prix":200}
+{ "index" : {}}
+{ "num":"L2", "nom":"lunette", "quantite_stock":4, "prix":300}
+{ "index" : {}}
+{ "num":"L3", "nom":"lunette", "quantite_stock":0, "prix":400}
+{ "index" : {}}
+{ "num":"B1", "nom":"bague", "quantite_stock":3, "prix":1200}
+{ "index" : {}}
+{ "num":"B2","nom":"bague","quantite_stock":2,"prix":1300}
+{ "index" : {}}
+{ "num":"C1", "nom":"collier", "quantite_stock": 8, "prix": 250}
+{ "index" : {}}
+{ "num":"C2", "nom":"collier", "quantite_stock": 5, "prix": 450}
+{ "index" : {}}
+{ "num":"C3", "nom":"collier", "quantite_stock": 3, "prix": 1100}
+{ "index" : {}}
+{ "num":"M1", "nom":"montre", "quantite_stock": 12, "prix": 85}
+{ "index" : {}}
+{ "num":"M2", "nom":"montre", "quantite_stock": 6, "prix": 99}
+{ "index" : {}}
+{ "num":"M3", "nom":"montre", "quantite_stock": 8, "prix": 150}
 
 
 // exec this command to be able to sort by name
