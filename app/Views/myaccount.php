@@ -5,6 +5,11 @@
                 <h4 class="modal-title">
                     Mon compte
                 </h4>
+                <?php if(isset($_GET['error']) || isset($_GET['success'])) : ?>
+                    <div class="alert alert-<?= (isset($_GET['error'])) ? 'danger' : 'success' ?>" role="alert">
+                        <?= (isset($_GET['error'])) ? $_GET['error'] : $_GET['success'] ?>
+                    </div>
+                <?php endif; ?>
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input name="email" type="email" value="<?=$data[0]['email']?>" class="form-control" placeholder="Email" required="required">

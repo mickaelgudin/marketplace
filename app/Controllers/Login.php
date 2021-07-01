@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Controllers;
-use CodeIgniter\Cookie\Cookie;
-use \Datetime;
 
 class Login extends BaseController
 {

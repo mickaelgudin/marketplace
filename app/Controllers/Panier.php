@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Controllers;
-use \CodeIgniter\HTTP\Response;
 
 class Panier extends BaseController
 {
