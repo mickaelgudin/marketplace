@@ -1,6 +1,9 @@
 # Marketplace - avec plusieurs base de données
 
-[![Watch the video](https://user-images.githubusercontent.com/39730173/123625648-4003cf80-d810-11eb-9075-31b89945c125.mp4)](https://user-images.githubusercontent.com/39730173/123625648-4003cf80-d810-11eb-9075-31b89945c125.mp4)
+## Démo
+lien vers la vidéo youtube : http://www.youtube.com/watch?v=ZnLIo7Fhwcw
+
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/ZnLIo7Fhwcw/0.jpg)](http://www.youtube.com/watch?v=ZnLIo7Fhwcw "Projet NoSQL (Mongodb, Redis, ElasticSearch)")
 
 ## Le technos et leur configuration dans le projet
 - Redis : en utilisant les fonctionnalités de cache du Framework CodeIgniter (au niveau de app/Config/Cache.php Predis est configuré comme handler de cache)
