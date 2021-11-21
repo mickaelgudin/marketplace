@@ -1,18 +1,18 @@
-# Marketplace - avec plusieurs base de données
+# Marketplace - with several NoSQL databases
 
-## Démo
-lien vers la vidéo youtube : http://www.youtube.com/watch?v=ZnLIo7Fhwcw
+## Demo
+link to the youtube video(french version) : http://www.youtube.com/watch?v=ZnLIo7Fhwcw
 
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/ZnLIo7Fhwcw/0.jpg)](http://www.youtube.com/watch?v=ZnLIo7Fhwcw "Projet NoSQL (Mongodb, Redis, ElasticSearch)")
 
-## Le technos et leur configuration dans le projet
-- Redis : en utilisant les fonctionnalités de cache du Framework CodeIgniter (au niveau de app/Config/Cache.php Predis est configuré comme handler de cache)
-- Elasticsearch : en faisant des appels api via javascript (pour les Views panier.php et catalogue.php)
-- Mongodb : avec une instance locale, en utilisant le Controller Mongodb.php (en se basant sur le code sur repo : https://github.com/intekhabrizvi/codeigniter-mongodb-library)
+## The project NoSQL databases and their implementation
+- Redis : local instance, caching features from the Framework CodeIgniter (in the app/Config/Cache.php file, Predis is configured as a cache handler)
+- Elasticsearch : local instance, and api calls in javascript (for the views panier.php and catalogue.php)
+- Mongodb : local instance, using the controller Mongodb.php (based on this repo : https://github.com/intekhabrizvi/codeigniter-mongodb-library)
 
-## Lancement du projet
-- git pull du projet (si le zip est téléchargé merci de bien nommer le dossier marketplace)
-- Dans le répétoire elastic search de votre machine, allez dans config/elasticsearch.yml et ajouter les config suivantes : 
+## Launching the project
+- git pull (if you dowload the zip file, please make sure that the folder is called marketplace)
+- In the elasticsearch folder in your computuer, go to config/elasticsearch.yml and add the followings configs(if not present) : 
 ```
 http.cors.enabled : true
 http.cors.allow-origin: "*"
@@ -20,35 +20,35 @@ http.cors.allow-methods: OPTIONS, HEAD, GET, POST, PUT, DELETE
 http.cors.allow-headers: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers
 http.cors.allow-credentials: true
 ```
-- le driver mongodb doit être installé au niveau de wamp
-- le projet doit être dans le répertoire www de wamp
-- Exécuter la commande suivante à la racine du projet : `composer install`
-- Lancer les bases de données (soit manuellement soit en utilisant le script launch-database.bat *à condition de modifier les chemins dans le fichier*)
-- Exécuter les requêtes pour mongodb (**les commandes mongodb sont dans le fichier ajout_des_collections.txt**)
-- Exécuter les requêtes pour elasticsearch via postman (**les requetes http sont dans le fichier elasticSearch.txt**)
-- Dans la console redis-cli taper `CONFIG SET requirepass password`
-- Dans la consle redis-cli taper `AUTH password`
-- Dans un navigateur(chrome de préférence pour le js implétementé) aller sur la page d'accueil : http://localhost/marketplace/public/
-- Vous pouvez vous connecter avec l'utilisateur par défault(créer dans mongodb)
+- the mongodb driver needs to be installed in wamp(or equivalent)
+- the project should be put in the www folder of wamp(or equivalent)
+- execture the following commmand : `composer install`
+- start all databases (either manually or using the script launch-database.bat *provided that you change the url in the .bat file*)
+- Execute the mongodb commands (**see the file ajout_des_collections.txt**)
+- Execute the elasticsearch api request via postman(or other) (**see the file elasticSearch.txt**)
+- In the console redis-cli enter `CONFIG SET requirepass password`
+- In the console redis-cli enter `AUTH password`
+- In your web browser(chrome is the only fully supported) go to the home page : http://localhost/marketplace/public/
+- You can log in using already existing users(created via mongodb commands)
 ```
 Email : test@test.fr
-mot de passe : test 
+password : test 
 ```
-- Vous pouvez créer un compte et vous connecter avec
+- You can also create a new account and log in
 
-## L'utilisation des bases de données
-- Les appels http avec javascript permettent d'afficher les données d'elastic search sans rafraichir la page, de plus plusieurs rêquetes peuvent être effectuées (recherche d'un nom, filtre sur un intervalle de prix, tri par nom et prix croissant ou décroissant)
+## The databases and their uses
+- The api calls to elastic search via javascript allow us to display data without refreshing the page. The catalogue search engine can perform several filters at once(search by name, search by price interval, and ordering).
 ![Alt text](/screenshots/catalogue.png?raw=true)
-- Elastic search permet de vérifier si la quantité désirée est suffisante par le client quand il clique sur + pour un produit dans le panier (un appel http est fait en js si tout se passe bien php ajoute la quantité désirée, sinon une erreur est affichée à l'utilisateur)
+- Elastic search allow to check if the requested quantity is consistent with stock(when clicking + button on of product in the cart), if not an error is displayed.
 ![Alt text](/screenshots/quantite_insuffisante.png?raw=true)
-- Lorsqu'on clique sur le bouton Commander dans le panier, on traduit le panier présent dans Redis en Commande et Ligne de commande dans MongoDb en faisant une gestion des cas d'erreurs
-- Redis est central il permet d'accèder à l'utilisateur connecté (pour l'associer à une commande), ou pour l'afficher dans le menu
+- When clicking in the "Commander"(order) button in the cart, we translate the cart stored in Redis into Commande(order) and Ligne(order lines) to MongoDb with errors handling.
+- Mongodb is where persistent data are stored(order, order lines, users)
 
-## Gestion d'erreur
-- Le maximum de cas d'erreur est géré au niveau php(une nouvelle commande n'a pas inséré dans mongodb, utilisateur pas connecté essayant d'accèder au(x): catalogue, commandes ou panier)
-- Au niveau javascript pour le catalogue, on fait en sorte que l'utilisateur ne puisse pas entrer une quantité supérieure au stock (via des vérifications d'entrées de clavier...)
+## Error handling
+- Most errors are handle in the server side(refuse access to guest users in some pages : catalogue, cart, orders...)
+- For the catalgoue(in javascript), the user cannot enter a quantity exceeding the current stock for the product
 
-## Le modèle de données
+## Data model
 ![Alt text](/screenshots/data_model.jpeg?raw=true)
 
 
