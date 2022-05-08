@@ -1,10 +1,5 @@
 # Marketplace - with several NoSQL databases
 
-## Demo
-link to the youtube video(french version) : http://www.youtube.com/watch?v=ZnLIo7Fhwcw
-
-[![IMAGE ALT TEXT](http://img.youtube.com/vi/ZnLIo7Fhwcw/0.jpg)](http://www.youtube.com/watch?v=ZnLIo7Fhwcw "Projet NoSQL (Mongodb, Redis, ElasticSearch)")
-
 ## The project NoSQL databases and their implementation
 - Redis : local instance, caching features from the Framework CodeIgniter (in the app/Config/Cache.php file, Predis is configured as a cache handler)
 - Elasticsearch : local instance, and api calls in javascript (for the views panier.php and catalogue.php)
